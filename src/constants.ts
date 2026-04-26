@@ -26,10 +26,11 @@ export const locationData = {
         { id: "geu",  name: "Graphic Era University", type: "center", lat: 30.2689, lon: 77.9931 },
 
         // ── EXCLUSIVE HOSTELS/PGs (Differentiator) ──
-        { id: "h_shree", name: "Shree Krishna PG (Boys)", type: "hostel", lat: 30.2710, lon: 77.9950 },
-        { id: "h_girls", name: "Green View Girls Hostel", type: "hostel", lat: 30.2740, lon: 77.9920 },
-        { id: "h_pre",   name: "Prem Nagar Premium PG", type: "hostel", lat: 30.3340, lon: 77.9650 },
-        { id: "h_bal",   name: "Ballupur Student Accom", type: "hostel", lat: 30.3320, lon: 78.0050 },
+        { id: "h_shree", name: "Shree Krishna PG (Boys)", type: "hostel", lat: 30.2710, lon: 77.9950, price: "₹6,500/mo", conditions: ["1 Month Deposit", "Electricity Extra"], amenities: ["WiFi", "Laundry", "Mess"], gender: "boys", phone: "+91 98765 43210" },
+        { id: "h_girls", name: "Green View Girls Hostel", type: "hostel", lat: 30.2740, lon: 77.9920, price: "₹8,000/mo", conditions: ["No Deposit", "Curfew 9 PM"], amenities: ["AC", "Attached Bath", "Food Included"], gender: "girls", phone: "+91 91234 56789" },
+        { id: "h_pre",   name: "Prem Nagar Premium PG", type: "hostel", lat: 30.3340, lon: 77.9650, price: "₹5,500/mo", conditions: ["Student ID Required"], amenities: ["WiFi", "RO Water"], gender: "coed", phone: "+91 99887 76655" },
+        { id: "h_bal",   name: "Ballupur Student Accom", type: "hostel", lat: 30.3320, lon: 78.0050, price: "₹7,200/mo", conditions: ["2 Months Deposit", "11 Month Lock-in"], amenities: ["Gym", "Library", "Meals"], gender: "boys", phone: "+91 98765 12345" },
+
 
         // ── FETCHED REAL LOCATIONS ──
         { "id": "ChIJzQviZE4pCTkRnrSaEy9Yqy8", "name": "Shri Mahant Indiresh Hospital", "type": "hospital", "lat": 30.3045476, "lon": 78.02080269999999 },
@@ -57,8 +58,8 @@ export const locationData = {
         ["clk", "j_prince"], ["j_prince", "scm"], ["scm", "isbt"],
         // Crossroad Mall connects near Clock Tower/Dillaram
         ["clk", "crm"], ["crm", "j_dill"],
-        // Shortcut
-        ["bal", "j_balp"]
+        // Hostels connections
+        ["h_shree", "geu"], ["h_girls", "geu"], ["h_pre", "pre"], ["h_bal", "j_balp"]
     ]
 };
 

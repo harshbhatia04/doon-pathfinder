@@ -4,12 +4,17 @@ import { locationData } from './constants';
 
 declare const L: any;
 
-interface Location {
+export interface Location {
     id: string;
     name: string;
     type: string;
     lat: number;
     lon: number;
+    price?: string;
+    conditions?: string[];
+    amenities?: string[];
+    gender?: 'boys' | 'girls' | 'coed';
+    phone?: string;
 }
 
 const TYPE_COLORS: Record<string, string> = {
@@ -161,6 +166,67 @@ const Combobox: React.FC<{
     );
 };
 
+// ── Housing Dashboard ─────────────────────────────────────────────────────
+const HousingDashboard: React.FC<{
+    locations: Location[];
+    onRouteToCampus: (hostelId: string) => void;
+}> = ({ locations, onRouteToCampus }) => {
+    const hostels = locations.filter(l => l.type === 'hostel');
+    return (
+        <div style={{ padding: '40px', overflowY: 'auto', width: '100%', background: 'var(--bg-page)', color: 'var(--text-main)' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                <h1 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--primary)', margin: 0 }}>🏠 Student Housing Portal</h1>
+                <button className="btn-secondary" onClick={() => onRouteToCampus('')} style={{ fontSize: '14px', padding: '8px 16px', background: 'var(--bg-card)' }}>
+                    ✕ Close Portal
+                </button>
+            </div>
+            <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '16px' }}>Exclusive, verified student accommodations in Dehradun.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
+                {hostels.map(h => (
+                    <div key={h.id} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
+                        <div style={{ padding: '20px' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+                                <h3 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>{h.name}</h3>
+                                <span style={{ background: h.gender === 'girls' ? '#fbcfe8' : h.gender === 'boys' ? '#bfdbfe' : 'var(--input-bg)', color: h.gender === 'girls' ? '#be185d' : h.gender === 'boys' ? '#1d4ed8' : 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>
+                                    {h.gender || 'coed'}
+                                </span>
+                            </div>
+                            <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', marginBottom: '16px' }}>
+                                {h.price || 'Price on Request'}
+                            </div>
+                            
+                            <div style={{ marginBottom: '16px' }}>
+                                <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Amenities</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {h.amenities?.map(a => <span key={a} style={{ background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>✓ {a}</span>)}
+                                </div>
+                            </div>
+
+                                                        <div style={{ marginBottom: '24px' }}>
+                                <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Conditions</div>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {h.conditions?.map(c => <span key={c} style={{ border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', fontWeight: 500 }}>{c}</span>)}
+                                </div>
+                            </div>
+                            
+                            <div style={{ display: 'flex', gap: '12px' }}>
+                                <button className="btn-primary" style={{ flex: 1, padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => onRouteToCampus(h.id)}>
+                                    📍 Route
+                                </button>
+                                {h.phone && (
+                                    <a href={`tel:${h.phone.replace(/\s+/g, '')}`} className="btn-secondary" style={{ flex: 1, padding: '12px', fontSize: '14px', textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
+                                        📞 Contact
+                                    </a>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 // ── Main App ──────────────────────────────────────────────────────────────
 const App: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>(locationData.locations as Location[]);
@@ -177,6 +243,7 @@ const App: React.FC = () => {
     // const [facilityResults, setFacilityResults] = useState<any[]>([]);
     const [animating, setAnimating] = useState(false);
     const [animPhase, setAnimPhase] = useState<'idle' | 'scanning' | 'done'>('idle');
+    const [view, setView] = useState<'map' | 'housing'>('map');
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
@@ -477,6 +544,21 @@ const App: React.FC = () => {
         return [{ id: 'current_loc', name: '📍 My Current Location', type: 'user', lat: 0, lon: 0 }, ...base];
     }, [locations]);
 
+    const handleRouteToCampus = (hostelId: string) => {
+        setView('map');
+        if (hostelId) {
+            setMode('route');
+            setStartId(hostelId);
+            setEndId(null);
+            setClickStep('end');
+            setStatus('Hostel selected. Please select your campus destination.');
+            const loc = locations.find(l => l.id === hostelId);
+            if (loc && mapRef.current) mapRef.current.setView([loc.lat, loc.lon], 15);
+        } else {
+            setStatus('System ready.');
+        }
+    };
+
     return (
         <div id="app-container">
             <div className="main-layout">
@@ -485,6 +567,14 @@ const App: React.FC = () => {
                         <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', margin: 0 }}>Pathfinder</h1>
                         <ThemeToggle theme={theme} toggle={toggleTheme} />
                     </div>
+
+                    <button 
+                        className="btn-secondary" 
+                        style={{ marginBottom: '16px', background: view === 'housing' ? 'var(--primary)' : 'var(--bg-card)', color: view === 'housing' ? 'white' : 'var(--text-main)', borderColor: view === 'housing' ? 'var(--primary)' : 'var(--border)' }}
+                        onClick={() => setView(view === 'housing' ? 'map' : 'housing')}
+                    >
+                        {view === 'housing' ? '🗺️ Back to Map' : '🏠 Student Housing Portal'}
+                    </button>
 
                     {/* Bidir legend */}
                     <div style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>
@@ -578,8 +668,14 @@ const App: React.FC = () => {
                         {status}
                     </div>
                 </div>
-
-                <div id="map" />
+                <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', zIndex: 2000, background: 'var(--bg-page)', display: view === 'housing' ? 'block' : 'none' }}>
+                    <HousingDashboard locations={locations} onRouteToCampus={handleRouteToCampus} />
+                </div>
+                {false ? (
+                    <HousingDashboard locations={locations} onRouteToCampus={handleRouteToCampus} />
+                ) : (
+                    <div id="map"></div>
+                )}
             </div>
         </div>
     );
