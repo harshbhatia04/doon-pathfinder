@@ -26,10 +26,10 @@ export const locationData = {
         { id: "geu",  name: "Graphic Era University", type: "center", lat: 30.2689, lon: 77.9931 },
 
         // ── EXCLUSIVE HOSTELS/PGs (Differentiator) ──
-        { id: "h_shree", name: "Shree Krishna PG (Boys)", type: "hostel", lat: 30.2710, lon: 77.9950, price: "₹6,500/mo", conditions: ["1 Month Deposit", "Electricity Extra"], amenities: ["WiFi", "Laundry", "Mess"], gender: "boys", phone: "+91 98765 43210" },
-        { id: "h_girls", name: "Green View Girls Hostel", type: "hostel", lat: 30.2740, lon: 77.9920, price: "₹8,000/mo", conditions: ["No Deposit", "Curfew 9 PM"], amenities: ["AC", "Attached Bath", "Food Included"], gender: "girls", phone: "+91 91234 56789" },
-        { id: "h_pre",   name: "Prem Nagar Premium PG", type: "hostel", lat: 30.3340, lon: 77.9650, price: "₹5,500/mo", conditions: ["Student ID Required"], amenities: ["WiFi", "RO Water"], gender: "coed", phone: "+91 99887 76655" },
-        { id: "h_bal",   name: "Ballupur Student Accom", type: "hostel", lat: 30.3320, lon: 78.0050, price: "₹7,200/mo", conditions: ["2 Months Deposit", "11 Month Lock-in"], amenities: ["Gym", "Library", "Meals"], gender: "boys", phone: "+91 98765 12345" },
+        { id: "h_shree", name: "Shree Krishna PG (Boys)", type: "hostel", lat: 30.2710, lon: 77.9950, price: "₹6,500/mo", conditions: ["1 Month Deposit", "Electricity Extra"], amenities: ["WiFi", "Laundry", "Mess"], gender: "boys", phone: "+91 98765 43210", photo: "/images/img1.jpg" },
+        { id: "h_girls", name: "Green View Girls Hostel", type: "hostel", lat: 30.2740, lon: 77.9920, price: "₹8,000/mo", conditions: ["No Deposit", "Curfew 9 PM"], amenities: ["AC", "Attached Bath", "Food Included"], gender: "girls", phone: "+91 91234 56789", photo: "/images/img3.jpg" },
+        { id: "h_pre",   name: "Prem Nagar Premium PG", type: "hostel", lat: 30.3340, lon: 77.9650, price: "₹5,500/mo", conditions: ["Student ID Required"], amenities: ["WiFi", "RO Water"], gender: "coed", phone: "+91 99887 76655", photo: "/images/img2.jpg" },
+        { id: "h_bal",   name: "Ballupur Student Accom", type: "hostel", lat: 30.3320, lon: 78.0050, price: "₹7,200/mo", conditions: ["2 Months Deposit", "11 Month Lock-in"], amenities: ["Gym", "Library", "Meals"], gender: "boys", phone: "+91 98765 12345", photo: "/images/img4.jpg" },
 
 
         // ── FETCHED REAL LOCATIONS ──

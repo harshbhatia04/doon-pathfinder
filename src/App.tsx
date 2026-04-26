@@ -15,6 +15,7 @@ export interface Location {
     amenities?: string[];
     gender?: 'boys' | 'girls' | 'coed';
     phone?: string;
+    photo?: string | string[];
 }
 
 const TYPE_COLORS: Record<string, string> = {
@@ -183,8 +184,19 @@ const HousingDashboard: React.FC<{
             <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '16px' }}>Exclusive, verified student accommodations in Dehradun.</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
                 {hostels.map(h => (
-                    <div key={h.id} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow)' }}>
-                        <div style={{ padding: '20px' }}>
+                    <div key={h.id} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow)', display: 'flex', flexDirection: 'column' }}>
+                        {h.photo && (
+                            Array.isArray(h.photo) ? (
+                                <div className="photo-carousel" style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+                                    {h.photo.map((p, i) => (
+                                        <img key={i} src={p} alt={`${h.name} ${i}`} style={{ width: '100%', flexShrink: 0, height: '200px', objectFit: 'cover', scrollSnapAlign: 'start' }} />
+                                    ))}
+                                </div>
+                            ) : (
+                                <img src={h.photo as string} alt={h.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                            )
+                        )}
+                        <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                                 <h3 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>{h.name}</h3>
                                 <span style={{ background: h.gender === 'girls' ? '#fbcfe8' : h.gender === 'boys' ? '#bfdbfe' : 'var(--input-bg)', color: h.gender === 'girls' ? '#be185d' : h.gender === 'boys' ? '#1d4ed8' : 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>
@@ -209,7 +221,7 @@ const HousingDashboard: React.FC<{
                                 </div>
                             </div>
                             
-                            <div style={{ display: 'flex', gap: '12px' }}>
+                            <div style={{ display: 'flex', gap: '12px', marginTop: 'auto' }}>
                                 <button className="btn-primary" style={{ flex: 1, padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => onRouteToCampus(h.id)}>
                                     📍 Route
                                 </button>
