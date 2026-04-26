@@ -1,0 +1,702 @@
+[
+  {
+    "id": "ChIJzQviZE4pCTkRnrSaEy9Yqy8",
+    "name": "Shri Mahant Indiresh Hospital",
+    "type": "hospital",
+    "lat": 30.3045476,
+    "lon": 78.02080269999999
+  },
+  {
+    "id": "ChIJIY7xBLkpCTkR36VRFLupqqs",
+    "name": "𝗖𝗶𝘁𝘆 𝗛𝗲𝗮𝗿𝘁 𝗖𝗲𝗻𝘁𝗿𝗲- Emergency/Heart/Best Cardiac Doctor/Best Hospital in Dehradun",
+    "type": "hospital",
+    "lat": 30.313376199999997,
+    "lon": 78.0497074
+  },
+  {
+    "id": "ChIJS1u_XA4pCTkR054wcCVe9Ng",
+    "name": "Kanishk Surgical & Super Specialty Hospital",
+    "type": "hospital",
+    "lat": 30.2915861,
+    "lon": 78.05076679999999
+  },
+  {
+    "id": "ChIJPZE-gB0pCTkR61QAotc1uV4",
+    "name": "Kailash Hospital",
+    "type": "hospital",
+    "lat": 30.2882818,
+    "lon": 78.0641818
+  },
+  {
+    "id": "ChIJUQbNZLwpCTkRlWF0y4Wfb-k",
+    "name": "Baluni Hospital",
+    "type": "hospital",
+    "lat": 30.2891859,
+    "lon": 78.06792659999999
+  },
+  {
+    "id": "ChIJGXjThpUpCTkRWTW86NuPB2I",
+    "name": "Government Doon Medical College Hospital",
+    "type": "hospital",
+    "lat": 30.3196299,
+    "lon": 78.0421506
+  },
+  {
+    "id": "ChIJtyJmPikpDzkRh-ujdThnRgM",
+    "name": "Vibhuti Super Speciality Hospital",
+    "type": "hospital",
+    "lat": 30.307555999999998,
+    "lon": 77.9847237
+  },
+  {
+    "id": "ChIJrQq-Q6wpCTkRl1kg5eFsq8g",
+    "name": "Medilife Superspeciality Hospital: Premier Multispeciality Hospital and Private Hospital",
+    "type": "hospital",
+    "lat": 30.2882763,
+    "lon": 78.0293774
+  },
+  {
+    "id": "ChIJ26WG3GIpCTkRBsgWbhJQfRw",
+    "name": "Aarogyadham Super Speciality Hospital & Research Center",
+    "type": "hospital",
+    "lat": 30.318911399999998,
+    "lon": 78.04348499999999
+  },
+  {
+    "id": "ChIJlREwtAYqCTkRuyZNQRaKjXo",
+    "name": "Synergy Institute of Medical Sciences",
+    "type": "hospital",
+    "lat": 30.337653699999997,
+    "lon": 78.0139069
+  },
+  {
+    "id": "ChIJ1-Jn5WcrCTkR8uU2ejxuJaM",
+    "name": "Sunanda Medical Centre",
+    "type": "hospital",
+    "lat": 30.298798299999998,
+    "lon": 77.9966287
+  },
+  {
+    "id": "ChIJA_0zFrApCTkRbyGbqTd7ViI",
+    "name": "Krishna Medical Centre & Multispeciality Hospital | Gastroenterologist | Liver | Endoscopy | Hospital | Dehradun",
+    "type": "hospital",
+    "lat": 30.3128925,
+    "lon": 78.0551432
+  },
+  {
+    "id": "ChIJY0-MQdApCTkR87h7LuelgCs",
+    "name": "𝗡𝗮𝗻𝗱𝗮 𝗛𝗼𝘀𝗽𝗶𝘁𝗮𝗹 - Nursing Home/Best Hospital/Physician/Obs Gynae Hospital in Dehradun",
+    "type": "hospital",
+    "lat": 30.3364054,
+    "lon": 78.0552763
+  },
+  {
+    "id": "ChIJxUUNgMUpCTkRg51qYG4ijis",
+    "name": "Dolphin Jankalyan Multispecility Hospital",
+    "type": "hospital",
+    "lat": 30.3319273,
+    "lon": 78.0538353
+  },
+  {
+    "id": "ChIJh03cQbspCTkRLgodn4hoq54",
+    "name": "S.K Memorial Hospital",
+    "type": "hospital",
+    "lat": 30.328693599999998,
+    "lon": 78.0526533
+  },
+  {
+    "id": "ChIJHRP2vHMpCTkRTzA5C_7lRSk",
+    "name": "Cure Hospital",
+    "type": "hospital",
+    "lat": 30.300965899999998,
+    "lon": 78.0462986
+  },
+  {
+    "id": "ChIJ4T3Dfy4pCTkRb_iy7n2ca_k",
+    "name": "Panacea Super Speciality Hospital Dehradun | Best Hospital in Dehradun",
+    "type": "hospital",
+    "lat": 30.2964573,
+    "lon": 78.05561139999999
+  },
+  {
+    "id": "ChIJ-46H1BApCTkRrNgSa2xnD1E",
+    "name": "Arihant Hospital",
+    "type": "hospital",
+    "lat": 30.2918152,
+    "lon": 78.05985419999999
+  },
+  {
+    "id": "ChIJp-HiN7fXCDkRVJ3SP3FfVnQ",
+    "name": "Max Super Speciality Hospital, Dehradun",
+    "type": "hospital",
+    "lat": 30.3734836,
+    "lon": 78.07440129999999
+  },
+  {
+    "id": "ChIJ30vn97YpCTkROPfcMAylHHs",
+    "name": "Coronation Hospital",
+    "type": "hospital",
+    "lat": 30.3207041,
+    "lon": 78.0574377
+  },
+  {
+    "id": "ChIJp-lBilsrCTkR-VrEuX-aCN8",
+    "name": "First Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.2940963,
+    "lon": 77.9976319
+  },
+  {
+    "id": "ChIJG3IM2MkpCTkRO7g2PlC1Unk",
+    "name": "Gauri Health Plus - Pharmacy & Cosmetics Store in Dehradun",
+    "type": "pharmacy",
+    "lat": 30.2989812,
+    "lon": 78.0512495
+  },
+  {
+    "id": "ChIJIQTqK4wpCTkRABX9b_BbjP0",
+    "name": "Mr. Care Pharmacy | Race Course Road | Haridwar Road | Suri Chowk",
+    "type": "pharmacy",
+    "lat": 30.3132983,
+    "lon": 78.0461886
+  },
+  {
+    "id": "ChIJqUir82orCTkRSTBxa37pVgo",
+    "name": "Mr. Care Pharmacy | Indra Nagar | Malik Chowk | Vasant Vihar",
+    "type": "pharmacy",
+    "lat": 30.318296,
+    "lon": 78.0012716
+  },
+  {
+    "id": "ChIJR-LJ_5ArCTkRtjhb20VPXxY",
+    "name": "Mr. Care Pharmacy | Ballupur | Vijay Park | Sunder Vihar",
+    "type": "pharmacy",
+    "lat": 30.333330099999998,
+    "lon": 78.013981
+  },
+  {
+    "id": "ChIJQY2DiZYpCTkRV9CPhYvynws",
+    "name": "Dehradun pharmacy",
+    "type": "pharmacy",
+    "lat": 30.3041909,
+    "lon": 78.0482248
+  },
+  {
+    "id": "ChIJk9vjynsqCTkRnWVBkWJBwoE",
+    "name": "Apollo Pharmacy Krishna Nagar Dehradun",
+    "type": "pharmacy",
+    "lat": 30.333458099999998,
+    "lon": 78.0248671
+  },
+  {
+    "id": "ChIJv_klftspCTkRGjmQct2nFrk",
+    "name": "Apollo Pharmacy Araghar Dehradun",
+    "type": "pharmacy",
+    "lat": 30.3092208,
+    "lon": 78.04884729999999
+  },
+  {
+    "id": "ChIJr-VNoLwpCTkRp5ky1dDDbok",
+    "name": "Doon Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.312607699999997,
+    "lon": 78.0479167
+  },
+  {
+    "id": "ChIJPQPROMgpCTkRmf48YQZnQd0",
+    "name": "Vinay Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.324716799999997,
+    "lon": 78.0555839
+  },
+  {
+    "id": "ChIJ_aJJ9l4rCTkRmpeK8afoYxU",
+    "name": "Mr. Care Pharmacy | Chakki Tola | Sailok | GMS Road",
+    "type": "pharmacy",
+    "lat": 30.306016099999997,
+    "lon": 78.0049933
+  },
+  {
+    "id": "ChIJlQgCobwpCTkRIUQMxpiV6n4",
+    "name": "Rinko Medicos",
+    "type": "pharmacy",
+    "lat": 30.3130302,
+    "lon": 78.0459912
+  },
+  {
+    "id": "ChIJ5XQDUIUrCTkRJ-3ctaAJ1QM",
+    "name": "Apollo Pharmacy ONGC Hospital Dehradun",
+    "type": "pharmacy",
+    "lat": 30.335929099999998,
+    "lon": 78.01644
+  },
+  {
+    "id": "ChIJLZUOCIopCTkR5ahAdwVEONs",
+    "name": "PROMEDS PHARMACY",
+    "type": "pharmacy",
+    "lat": 30.3191162,
+    "lon": 78.0434636
+  },
+  {
+    "id": "ChIJ7wQ8UdQpCTkROr2UN5zdFuM",
+    "name": "Apollo Pharmacy Kargi Road",
+    "type": "pharmacy",
+    "lat": 30.2921545,
+    "lon": 78.0251978
+  },
+  {
+    "id": "ChIJgYYxLWHVCDkRJyp-Q1-P93s",
+    "name": "Asian Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.350331999999998,
+    "lon": 78.020609
+  },
+  {
+    "id": "ChIJH04r9AErCTkR0ROSs7lOURM",
+    "name": "Medbay Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.307071099999998,
+    "lon": 77.98518849999999
+  },
+  {
+    "id": "ChIJVWsLRsMrCTkRlHUL2woQg8A",
+    "name": "Bhavyaa Pharmacy",
+    "type": "pharmacy",
+    "lat": 30.336218499999998,
+    "lon": 77.9611051
+  },
+  {
+    "id": "ChIJ1XhsiKArCTkR-bCDgQ0d5aw",
+    "name": "Mr. Care Pharmacy | IMA | Prem Nagar | Chakrata Road",
+    "type": "pharmacy",
+    "lat": 30.336291799999998,
+    "lon": 77.9724671
+  },
+  {
+    "id": "ChIJV40T4ZwpCTkRM0dhPARj6vU",
+    "name": "Goodness Pharmacy And More...",
+    "type": "pharmacy",
+    "lat": 30.3364269,
+    "lon": 78.0556351
+  },
+  {
+    "id": "ChIJO0Fo-PgpCTkR_ARxI9Ec0Es",
+    "name": "Bharat Petroleum Petrol & Cng Pump",
+    "type": "fuel",
+    "lat": 30.303365,
+    "lon": 78.074966
+  },
+  {
+    "id": "ChIJg58ov8EpCTkR3uE3blrxNGE",
+    "name": "Universal Filling Station - Bharat Petroleum",
+    "type": "fuel",
+    "lat": 30.3262741,
+    "lon": 78.0439085
+  },
+  {
+    "id": "ChIJJX6NA9jXCDkRhwlneRjE5XE",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.348352,
+    "lon": 78.077202
+  },
+  {
+    "id": "ChIJ-bsMwfopCTkRQpXyJo7_vH8",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.349791099999997,
+    "lon": 78.06726019999999
+  },
+  {
+    "id": "ChIJtxlOqg8qCTkRZ1O3XH3fSFM",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.332763999999997,
+    "lon": 78.005509
+  },
+  {
+    "id": "ChIJRZgDS70rCTkR8ccYD-dPa04",
+    "name": "Jio-bp",
+    "type": "fuel",
+    "lat": 30.336399,
+    "lon": 78.01207699999999
+  },
+  {
+    "id": "ChIJ69nDZjfVCDkRraDFW2ayVcE",
+    "name": "Bharat petroleum Petrol Pump.And CNG",
+    "type": "fuel",
+    "lat": 30.3390684,
+    "lon": 77.9561429
+  },
+  {
+    "id": "ChIJIQfrDMzXCDkRvdYOjwGzWcE",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.3636268,
+    "lon": 78.0690335
+  },
+  {
+    "id": "ChIJrbNfUgwqCTkRHRoUZW49Zyg",
+    "name": "Guru Kripa Petrol Pump",
+    "type": "fuel",
+    "lat": 30.332525399999998,
+    "lon": 78.0002777
+  },
+  {
+    "id": "ChIJ16oAGO4pCTkRCnazncLmpoA",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.328197799999998,
+    "lon": 78.031559
+  },
+  {
+    "id": "ChIJwZ_REu4pCTkRUUp8Ni_y1Y4",
+    "name": "Hindustan Petroleum Corporation Limited",
+    "type": "fuel",
+    "lat": 30.3302305,
+    "lon": 78.0297497
+  },
+  {
+    "id": "ChIJk1nKfsEpCTkRil8xHfdpx7w",
+    "name": "Hindustan Petroleum Corporation Limited",
+    "type": "fuel",
+    "lat": 30.327738099999998,
+    "lon": 78.0455439
+  },
+  {
+    "id": "ChIJs9cw3wQqCTkR6WCtQNuSuxY",
+    "name": "Hindustan Petroleum Corporation Limited",
+    "type": "fuel",
+    "lat": 30.331736099999997,
+    "lon": 78.01109009999999
+  },
+  {
+    "id": "ChIJgb_NhgIqCTkRbmZxE6aaaGg",
+    "name": "SAGAR FILLING STATION",
+    "type": "fuel",
+    "lat": 30.3258948,
+    "lon": 78.0373449
+  },
+  {
+    "id": "ChIJOyw2FAIpCTkRtmr-lPysY-Q",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.343224,
+    "lon": 78.062715
+  },
+  {
+    "id": "ChIJMRiJP3EpCTkRi1HVm86cdcg",
+    "name": "IndianOil",
+    "type": "fuel",
+    "lat": 30.316933,
+    "lon": 78.0396173
+  },
+  {
+    "id": "ChIJQQTAMDEqCTkRuoRTYZhITy8",
+    "name": "PREMIER MOTORS - HP PETROL PUMP",
+    "type": "fuel",
+    "lat": 30.303414099999998,
+    "lon": 78.00302049999999
+  },
+  {
+    "id": "ChIJ3epzT7kpCTkRlILIaCmcafA",
+    "name": "Abner Fuel Station",
+    "type": "fuel",
+    "lat": 30.3254637,
+    "lon": 78.0432472
+  },
+  {
+    "id": "ChIJbV78E5UpCTkRpgyRS3evhJ0",
+    "name": "Bhagwati Filling Station",
+    "type": "fuel",
+    "lat": 30.3156155,
+    "lon": 78.0370233
+  },
+  {
+    "id": "ChIJiYmcCAMqCTkRlo3Tdx60TVU",
+    "name": "BPCL Petrol Pump - KC Petroleum",
+    "type": "fuel",
+    "lat": 30.3335689,
+    "lon": 78.0159628
+  },
+  {
+    "id": "ChIJR00tSQArCTkR0kUytBKKA3A",
+    "name": "GLIDA Charging Station",
+    "type": "ev",
+    "lat": 30.290924,
+    "lon": 77.9975529
+  },
+  {
+    "id": "ChIJd0K3c5EpCTkRYDB33dSpDg4",
+    "name": "ECOPLUG Charging Station",
+    "type": "ev",
+    "lat": 30.314570999999997,
+    "lon": 78.034302
+  },
+  {
+    "id": "ChIJmTJQ1NgpCTkRX0StI5734AA",
+    "name": "BMW Destination Charging Station",
+    "type": "ev",
+    "lat": 30.342806999999997,
+    "lon": 78.048295
+  },
+  {
+    "id": "ChIJuyjT48krCTkRBNvJuYL7Nqc",
+    "name": "TATA Charging Station",
+    "type": "ev",
+    "lat": 30.2886246,
+    "lon": 77.9969261
+  },
+  {
+    "id": "ChIJ-XqLeh0pCTkR4Teomagyv8U",
+    "name": "Ecoplug Charging Station",
+    "type": "ev",
+    "lat": 30.287834,
+    "lon": 78.06456
+  },
+  {
+    "id": "ChIJO-vbW_wpCTkRGtCP65DT2xM",
+    "name": "Statiq Charging Station",
+    "type": "ev",
+    "lat": 30.343379799999997,
+    "lon": 78.04813779999999
+  },
+  {
+    "id": "ChIJPbL51HwoCTkR1UwfyfmtS4I",
+    "name": "Thunder Plus Charging Station",
+    "type": "ev",
+    "lat": 30.307753499999997,
+    "lon": 78.09958519999999
+  },
+  {
+    "id": "ChIJV2kVhGHVCDkRy77iahrqFgI",
+    "name": "BPCL Charging Station",
+    "type": "ev",
+    "lat": 30.339312,
+    "lon": 77.956293
+  },
+  {
+    "id": "ChIJDe6j9FzVCDkRT8rwQMImJ5Y",
+    "name": "Gentari Charging Station",
+    "type": "ev",
+    "lat": 30.344876199999998,
+    "lon": 77.9468071
+  },
+  {
+    "id": "ChIJb3-TPyIpCTkR84OxjDoMXJc",
+    "name": "Ather Grid Charging Station",
+    "type": "ev",
+    "lat": 30.3381485,
+    "lon": 78.0587327
+  },
+  {
+    "id": "ChIJJR_mbpYpCTkRVMeD9KrKxDo",
+    "name": "Ather Grid Charging Station",
+    "type": "ev",
+    "lat": 30.315255099999998,
+    "lon": 78.040598
+  },
+  {
+    "id": "ChIJ2_xJSvgpCTkRn0H7F_sAwlw",
+    "name": "Tata Power Charging Station",
+    "type": "ev",
+    "lat": 30.333230999999998,
+    "lon": 78.022126
+  },
+  {
+    "id": "ChIJySenELzXCDkR7jcJPoCcwts",
+    "name": "Electric Vehicle Charging Station",
+    "type": "ev",
+    "lat": 30.3677009,
+    "lon": 78.0945935
+  },
+  {
+    "id": "ChIJdQDPO8orCTkRtPwtIqPDAJ0",
+    "name": "Tata Power Charging Station",
+    "type": "ev",
+    "lat": 30.290727999999998,
+    "lon": 77.998633
+  },
+  {
+    "id": "ChIJiaPu12bVCDkRy86ypMTOvtg",
+    "name": "Tata Power Charging Station",
+    "type": "ev",
+    "lat": 30.3430197,
+    "lon": 77.9539417
+  },
+  {
+    "id": "ChIJtU8CJHApCTkRIxJgzRsHmYc",
+    "name": "Tata Power Charging Station",
+    "type": "ev",
+    "lat": 30.287556,
+    "lon": 78.03276799999999
+  },
+  {
+    "id": "ChIJn647s6ArCTkRAn4lP4SNs2k",
+    "name": "Zevpoint Charging Station",
+    "type": "ev",
+    "lat": 30.289420099999997,
+    "lon": 78.00573849999999
+  },
+  {
+    "id": "ChIJY1oBhpjXCDkRJsEtTe0Sj0E",
+    "name": "Tata Power Charging Station",
+    "type": "ev",
+    "lat": 30.366464999999998,
+    "lon": 78.07031219999999
+  },
+  {
+    "id": "ChIJyeuW1KYpCTkRtVvCCmovLfM",
+    "name": "Ather Grid Charging Station",
+    "type": "ev",
+    "lat": 30.303113999999997,
+    "lon": 78.04818
+  },
+  {
+    "id": "ChIJETfJc-MrCTkRKfLnwmMJX8g",
+    "name": "ChargeZone Charging Station",
+    "type": "ev",
+    "lat": 30.2883563,
+    "lon": 77.9971925
+  },
+  {
+    "id": "ChIJh3iwh4UpCTkREP0YrqLlQms",
+    "name": "Free Parking Dehradun",
+    "type": "parking",
+    "lat": 30.318292999999997,
+    "lon": 78.0381471
+  },
+  {
+    "id": "ChIJ4_mQ3MEpCTkROw3fD2jJSKc",
+    "name": "Basement Parking",
+    "type": "parking",
+    "lat": 30.3261802,
+    "lon": 78.04296029999999
+  },
+  {
+    "id": "ChIJd7-fWYMpCTkR6_o3JiLdqhM",
+    "name": "DL Road Chowk",
+    "type": "parking",
+    "lat": 30.3337547,
+    "lon": 78.0620963
+  },
+  {
+    "id": "ChIJyaISgtYpCTkRPFIpvV3HS8A",
+    "name": "RTO Car Parking",
+    "type": "parking",
+    "lat": 30.3431853,
+    "lon": 78.0594401
+  },
+  {
+    "id": "ChIJtyuLcO0pCTkRrjwpouQc85Q",
+    "name": "Sanjeev Car Parking",
+    "type": "parking",
+    "lat": 30.317580699999997,
+    "lon": 78.03290369999999
+  },
+  {
+    "id": "ChIJixL_kvTVCDkREipVUFgmujs",
+    "name": "FRI Parking",
+    "type": "parking",
+    "lat": 30.3452293,
+    "lon": 77.9968002
+  },
+  {
+    "id": "ChIJb9ZCUR8pCTkRcwwiEfXdwcU",
+    "name": "Railway station Parking",
+    "type": "parking",
+    "lat": 30.3146624,
+    "lon": 78.033903
+  },
+  {
+    "id": "ChIJeSyZb5IpCTkRtQ0ZYm6EkoU",
+    "name": "Prajapati Parking Spot",
+    "type": "parking",
+    "lat": 30.317566799999998,
+    "lon": 78.0318228
+  },
+  {
+    "id": "ChIJE33AIQQpCTkRSMR5wgVxibA",
+    "name": "Taxi Parking",
+    "type": "parking",
+    "lat": 30.294942799999998,
+    "lon": 78.057974
+  },
+  {
+    "id": "ChIJYaQ9UpspCTkRt189P_OI89A",
+    "name": "Monthly Parking I Car & Bikes In Dehradun",
+    "type": "parking",
+    "lat": 30.3113435,
+    "lon": 78.02143559999999
+  },
+  {
+    "id": "ChIJHfdyuKspCTkREjbkQtYmqNg",
+    "name": "Tehsil chowk parking",
+    "type": "parking",
+    "lat": 30.321003299999997,
+    "lon": 78.0412983
+  },
+  {
+    "id": "ChIJayixm8crCTkRaIPNJuqLHEk",
+    "name": "Lal pull",
+    "type": "parking",
+    "lat": 30.3069594,
+    "lon": 78.0168346
+  },
+  {
+    "id": "ChIJqW8iTdApCTkRCxM_VRb7hmQ",
+    "name": "Car Parking",
+    "type": "parking",
+    "lat": 30.3368194,
+    "lon": 78.0565487
+  },
+  {
+    "id": "ChIJBai4UGMpCTkRd9o3nfKf74c",
+    "name": "Doon smart parking",
+    "type": "parking",
+    "lat": 30.3269298,
+    "lon": 78.0452469
+  },
+  {
+    "id": "ChIJ3Y0R3RcpCTkR_cW-WD-72Tg",
+    "name": "Paid parking (Ashish)",
+    "type": "parking",
+    "lat": 30.323572799999997,
+    "lon": 78.03808339999999
+  },
+  {
+    "id": "ChIJT-V9IGcrCTkRvz7NP1j0lnI",
+    "name": "Sunder Lal and Son's Yard",
+    "type": "parking",
+    "lat": 30.2879898,
+    "lon": 78.0020936
+  },
+  {
+    "id": "ChIJZ8gKzEgpCTkRbox2k3sJLqI",
+    "name": "Royal Valet Parking Services",
+    "type": "parking",
+    "lat": 30.311650999999998,
+    "lon": 78.0577648
+  },
+  {
+    "id": "ChIJcYPIkQDXCDkRTmd6LFRpKtE",
+    "name": "Car Parking CSD",
+    "type": "parking",
+    "lat": 30.3529067,
+    "lon": 78.0360674
+  },
+  {
+    "id": "ChIJg5aPkhLXCDkR61fnI66-AUQ",
+    "name": "IT PARK SAHASTRADHARA ROAD, DEHRADUN",
+    "type": "parking",
+    "lat": 30.356382,
+    "lon": 78.0854739
+  },
+  {
+    "id": "ChIJ19NjGY0pCTkRopsm0McSW8U",
+    "name": "Virat Parking",
+    "type": "parking",
+    "lat": 30.319130299999998,
+    "lon": 78.0285706
+  }
+]
