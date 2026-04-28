@@ -111,4 +111,59 @@ app.post('/api/search-places', async (req, res) => {
     }
 });
 
+// api to generate voice announcement using Sarvam AI
+app.post('/api/voice-announcement', async (req, res) => {
+    const { source, destination, distance, time, language } = req.body;
+    const template = `Your travel from ${source} to ${destination} will take approximately ${time} minutes and it is ${distance} km long.`;
+    
+    console.log(`Generating announcement in ${language}: "${template}"`);
+
+    try {
+        let textToSpeak = template;
+        
+        // 1. Translate if not English
+        if (language !== 'en-IN') {
+            try {
+                const transRes = await axios.post('https://api.sarvam.ai/translate', {
+                    input: template,
+                    source_language_code: 'en-IN',
+                    target_language_code: language,
+                    model: 'mayura:v1'
+                }, {
+                    headers: { 'api-subscription-key': process.env.SARVAM_API_KEY }
+                });
+                textToSpeak = transRes.data.translated_text;
+                console.log(`Translated text: ${textToSpeak}`);
+            } catch (transErr) {
+                console.error('Translation Error:', transErr.response?.data || transErr.message);
+                // Fallback to English if translation fails
+            }
+        }
+
+        // 2. Generate TTS
+        const ttsRes = await axios.post('https://api.sarvam.ai/text-to-speech', {
+            inputs: [textToSpeak],
+            target_language_code: language,
+            speaker: 'anushka',
+            pitch: 0,
+            pace: 1.1,
+            loudness: 1.5,
+            speech_sample_rate: 8000,
+            enable_preprocessing: true,
+            model: 'bulbul:v2'
+        }, {
+            headers: { 'api-subscription-key': process.env.SARVAM_API_KEY }
+        });
+
+        if (ttsRes.data && ttsRes.data.audios && ttsRes.data.audios.length > 0) {
+            res.json({ audio: ttsRes.data.audios[0], text: textToSpeak });
+        } else {
+            throw new Error('No audio returned from Sarvam AI');
+        }
+    } catch (err) {
+        console.error('Sarvam API Error:', err.response?.data || err.message);
+        res.status(500).json({ error: 'failed to generate voice announcement' });
+    }
+});
+
 app.listen(3001, () => console.log('Server started on port 3001'));

@@ -256,6 +256,8 @@ const App: React.FC = () => {
     const [animating, setAnimating] = useState(false);
     const [animPhase, setAnimPhase] = useState<'idle' | 'scanning' | 'done'>('idle');
     const [view, setView] = useState<'map' | 'housing'>('map');
+    const [language, setLanguage] = useState('en-IN');
+    const [isSpeaking, setIsSpeaking] = useState(false);
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
@@ -500,6 +502,9 @@ const App: React.FC = () => {
                 setResult({ path: [startId, endId], distance: dist, timeMins });
                 setStatus(`Route found — ${dist.toFixed(1)} km · ~${timeMins} min`);
                 setLoading(false);
+                
+                // Trigger voice announcement
+                handleVoiceAnnouncement(startLoc.name, endLoc.name, dist, timeMins);
             });
             return;
         }
@@ -543,6 +548,9 @@ const App: React.FC = () => {
                 setResult({ path: [startId, nearest.id], distance: dist, timeMins, destName: nearest.name });
                 setStatus(`Nearest ${facilityType}: ${nearest.name} — ${dist.toFixed(1)} km`);
                 setLoading(false);
+                
+                // Trigger voice announcement
+                handleVoiceAnnouncement(startLoc.name, nearest.name, dist, timeMins);
             });
         } catch (err) {
             console.error(err);
@@ -568,6 +576,40 @@ const App: React.FC = () => {
             if (loc && mapRef.current) mapRef.current.setView([loc.lat, loc.lon], 15);
         } else {
             setStatus('System ready.');
+        }
+    };
+
+    const handleVoiceAnnouncement = async (source: string, destination: string, distance: number, time: number) => {
+        setIsSpeaking(true);
+        setStatus('🔊 Generating voice announcement...');
+        try {
+            const response = await axios.post('http://localhost:3001/api/voice-announcement', {
+                source,
+                destination,
+                distance: distance.toFixed(1),
+                time,
+                language
+            });
+            
+            if (response.data.audio) {
+                const audio = new Audio(`data:audio/wav;base64,${response.data.audio}`);
+                audio.onended = () => {
+                    setIsSpeaking(false);
+                    setStatus('System ready.');
+                };
+                audio.play().catch(e => {
+                    console.error('Playback error:', e);
+                    setStatus(`🔊 Playback failed: ${e.message}`);
+                    setIsSpeaking(false);
+                });
+            } else {
+                setIsSpeaking(false);
+                setStatus('Voice announcement failed (no audio).');
+            }
+        } catch (error: any) {
+            console.error('Voice announcement error:', error);
+            setIsSpeaking(false);
+            setStatus(`Voice assistant error: ${error.response?.data?.error?.message || error.message}`);
         }
     };
 
@@ -601,6 +643,20 @@ const App: React.FC = () => {
                     <div className="segmented-control">
                         <button className={mode === 'route' ? 'mode-btn active' : 'mode-btn'} onClick={() => setMode('route')}>Custom Route</button>
                         <button className={mode === 'facility' ? 'mode-btn active' : 'mode-btn'} onClick={() => setMode('facility')}>Nearest Facility</button>
+                    </div>
+
+                    <div className="field-group">
+                        <label className="field-label">ANNOUNCEMENT LANGUAGE</label>
+                        <select className="combo-input" value={language} onChange={e => setLanguage(e.target.value)}>
+                            <option value="hi-IN">Hindi (हिंदी)</option>
+                            <option value="mr-IN">Marathi (मराठी)</option>
+                            <option value="te-IN">Telugu (తెలుగు)</option>
+                            <option value="ta-IN">Tamil (தமிழ்)</option>
+                            <option value="bn-IN">Bengali (বাংলা)</option>
+                            <option value="kn-IN">Kannada (ಕನ್ನಡ)</option>
+                            <option value="gu-IN">Gujarati (ગુજરાતી)</option>
+                            <option value="en-IN">English</option>
+                        </select>
                     </div>
 
                     <div className="field-group">
@@ -653,8 +709,16 @@ const App: React.FC = () => {
                     </div>
 
                     {result && result.path && (
-                        <div className="result-card">
-                            <div className="result-label">DIJKSTRA {mode === 'route' ? 'ROUTE' : `NEAREST ${facilityType.toUpperCase()}`}</div>
+                        <div className="result-card" style={{ border: isSpeaking ? '2px solid var(--primary)' : '1px solid var(--border)', transition: 'all 0.3s' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                                <div className="result-label">DIJKSTRA {mode === 'route' ? 'ROUTE' : `NEAREST ${facilityType.toUpperCase()}`}</div>
+                                {isSpeaking && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: 'var(--primary)', fontSize: '11px', fontWeight: 800 }}>
+                                        <div className="bidir-spinner" style={{ width: '10px', height: '10px', border: '1.5px solid var(--primary)', borderTopColor: 'transparent' }}></div>
+                                        SPEAKING...
+                                    </div>
+                                )}
+                            </div>
                             <div className="result-val">
                                 {result.distance?.toFixed(2)} <span className="result-unit">km</span>
                                 <span style={{ fontSize: '14px', color: '#64748b', fontWeight: 600 }}>~{result.timeMins} min</span>
