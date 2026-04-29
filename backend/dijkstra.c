@@ -3,7 +3,7 @@
 #include <float.h>
 #include "graph_data.h"
 
-// min-heap structure for dijkstra
+
 typedef struct {
     int nodeIdx;
     double dist;
@@ -48,7 +48,7 @@ HeapNode pop(MinHeap* h) {
     return res;
 }
 
-// core dijkstra algorithm
+
 void dijkstra(Graph* g, int start, double* dists, int* parents) {
     for (int i = 0; i < g->numNodes; i++) {
         dists[i] = DBL_MAX;

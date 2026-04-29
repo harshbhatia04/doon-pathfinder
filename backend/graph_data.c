@@ -2,16 +2,16 @@
 
 #define PI 3.14159265358979323846
 
-// Haversine formula to get distance between two points
+
 double get_distance(double lat1, double lon1, double lat2, double lon2) {
-    double r = 6371; // Earth radius in km
+    double r = 6371; 
     double dlat = (lat2 - lat1) * PI / 180.0;
     double dlon = (lon2 - lon1) * PI / 180.0;
     double a = sin(dlat / 2) * sin(dlat / 2) +
                cos(lat1 * PI / 180.0) * cos(lat2 * PI / 180.0) *
                sin(dlon / 2) * sin(dlon / 2);
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
-    return r * c * 1.18; // Calibration factor for road curvature
+    return r * c * 1.18; 
 }
 
 int get_node_index(Graph* g, const char* id) {
@@ -38,7 +38,7 @@ void add_edge(Graph* g, const char* id1, const char* id2) {
     int v = get_node_index(g, id2);
     if (u == -1 || v == -1 || u == v) return;
 
-    // Check for existing edge
+    
     AdjNode* check = g->adj[u];
     while (check) {
         if (check->destIdx == v) return;
@@ -79,25 +79,25 @@ Graph* createGraph() {
 void loadDehradunData(Graph* g) {
     g->numNodes = 0;
     
-    // ── ROAD NETWORK SKELETON (Intersections & Midpoints) ────────
-    // Chakrata Road Branch (West)
+    
+    
     add_node(g, "j_balp", "Ballupur Chowk", 30.3341, 78.0000, "center");
     add_node(g, "j_bind", "Bindal Bridge", 30.3275, 78.0280, "center");
     add_node(g, "j_kish", "Kishan Nagar", 30.3256, 78.0158, "center");
     add_node(g, "j_chak_mid", "Chakrata Rd Mid", 30.3380, 77.9750, "center");
     
-    // Rajpur Road Branch (North East)
+    
     add_node(g, "j_dill", "Dillaram Chowk", 30.3400, 78.0550, "center");
     add_node(g, "j_raj_1", "Rajpur Road Curve 1", 30.3550, 78.0650, "center");
     add_node(g, "j_raj_2", "Rajpur Road Curve 2", 30.3750, 78.0750, "center");
     
-    // Saharanpur/Haridwar Hub (Central)
+    
     add_node(g, "j_prince", "Prince Chowk", 30.3175, 78.0375, "center");
     add_node(g, "j_shc", "Saharanpur Chowk", 30.3135, 78.0325, "center");
     add_node(g, "j_clem", "Clement Town Junction", 30.2820, 78.0100, "center");
     add_node(g, "j_mah", "Majra Junction", 30.2950, 78.0100, "center");
     
-    // ── LANDMARKS (POIs) - Precise Coordinates ──────────────────
+    
     add_node(g, "geu",  "Graphic Era University", 30.2689, 77.9931, "center");
     add_node(g, "clk",  "Clock Tower", 30.3253, 78.0413, "center");
     add_node(g, "isbt", "ISBT Dehradun", 30.2892, 77.9987, "center");
@@ -121,8 +121,8 @@ void loadDehradunData(Graph* g) {
     add_node(g, "srv",  "Survey Chowk", 30.3255, 78.0526, "center");
     add_node(g, "snj",  "Subhash Nagar Junc", 30.2725, 77.9995, "center");
 
-    // ── ROAD NETWORK TOPOLOGY (Dijkstra Edges) ──────────────────
-    // Road 1: Chakrata Road (West -> Center)
+    
+    
     add_edge(g, "pre", "j_chak_mid");
     add_edge(g, "j_chak_mid", "fri");
     add_edge(g, "fri", "hpsn");
@@ -131,7 +131,7 @@ void loadDehradunData(Graph* g) {
     add_edge(g, "j_kish", "j_bind");
     add_edge(g, "j_bind", "clk");
 
-    // Road 2: Rajpur Road (Center -> North East)
+    
     add_edge(g, "clk", "gnp");
     add_edge(g, "gnp", "j_dill");
     add_edge(g, "j_dill", "j_raj_1");
@@ -139,9 +139,9 @@ void loadDehradunData(Graph* g) {
     add_edge(g, "pac", "itp");
     add_edge(g, "itp", "j_raj_2");
     add_edge(g, "j_raj_2", "max");
-    add_edge(g, "j_raj_1", "sah"); // Branch to Sahastradhara
+    add_edge(g, "j_raj_1", "sah"); 
 
-    // Road 3: Saharanpur Road (South -> Center)
+    
     add_edge(g, "isbt", "j_mah");
     add_edge(g, "j_mah", "snj");
     add_edge(g, "snj", "j_clem");
@@ -151,7 +151,7 @@ void loadDehradunData(Graph* g) {
     add_edge(g, "j_shc", "smih");
     add_edge(g, "j_shc", "j_prince");
 
-    // Road 4: Haridwar Road / Central Hub
+    
     add_edge(g, "clk", "plt");
     add_edge(g, "plt", "j_prince");
     add_edge(g, "j_prince", "rly");
@@ -161,7 +161,7 @@ void loadDehradunData(Graph* g) {
     add_edge(g, "ris", "neh");
     add_edge(g, "neh", "isbt");
     
-    // Cross-connects & Shortcuts
+    
     add_edge(g, "srv", "gnp");
     add_edge(g, "bal", "j_balp");
     add_edge(g, "bal", "j_shc");
@@ -194,7 +194,7 @@ void findNearestFacility(Graph* g, char* startId, char* type) {
     extern void dijkstra(Graph* g, int start, double* dists, int* parents);
     dijkstra(g, startIdx, dists, parents);
 
-    // Collect all candidates of matching type
+    
     typedef struct { int idx; double d; } Cand;
     Cand candidates[MAX_NODES];
     int count = 0;
@@ -212,7 +212,7 @@ void findNearestFacility(Graph* g, char* startId, char* type) {
         return;
     }
 
-    // Sort by distance
+    
     for (int i = 0; i < count - 1; i++) {
         for (int j = 0; j < count - i - 1; j++) {
             if (candidates[j].d > candidates[j+1].d) {
@@ -223,7 +223,7 @@ void findNearestFacility(Graph* g, char* startId, char* type) {
         }
     }
 
-    // Return Top 1
+    
     int limit = (count < 1) ? count : 1;
     printf("[");
     for (int k = 0; k < limit; k++) {

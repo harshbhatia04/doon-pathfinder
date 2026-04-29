@@ -35,7 +35,7 @@ const getHaversineDistance = (lat1: number, lon1: number, lat2: number, lon2: nu
     return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 };
 
-// ── Bidirectional Dijkstra on the location graph ──────────────────────────
+
 function buildGraph(locations: Location[], connections: string[][]) {
     const idxMap = new Map<string, number>();
     locations.forEach((l, i) => idxMap.set(l.id, i));
@@ -113,7 +113,7 @@ function bidirDijkstra(adj: { to: number; w: number }[][], src: number, dst: num
     return { edgesF, edgesB, path, cost: best };
 }
 
-// ── Theme Toggle ─────────────────────────────────────────────────────────
+
 const ThemeToggle: React.FC<{ theme: string; toggle: () => void }> = ({ theme, toggle }) => (
     <button onClick={toggle} className="btn-secondary"
         style={{ width: '40px', height: '40px', borderRadius: '10px', padding: '0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px' }}>
@@ -121,7 +121,7 @@ const ThemeToggle: React.FC<{ theme: string; toggle: () => void }> = ({ theme, t
     </button>
 );
 
-// ── Combobox ──────────────────────────────────────────────────────────────
+
 const Combobox: React.FC<{
     locations: Location[];
     placeholder: string;
@@ -167,7 +167,7 @@ const Combobox: React.FC<{
     );
 };
 
-// ── Housing Dashboard ─────────────────────────────────────────────────────
+
 const HousingDashboard: React.FC<{
     locations: Location[];
     onRouteToCampus: (hostelId: string) => void;
@@ -239,7 +239,7 @@ const HousingDashboard: React.FC<{
     );
 };
 
-// ── Main App ──────────────────────────────────────────────────────────────
+
 const App: React.FC = () => {
     const [locations, setLocations] = useState<Location[]>(locationData.locations as Location[]);
     const [startId, setStartId] = useState<string | null>(null);
@@ -252,7 +252,7 @@ const App: React.FC = () => {
     const [clickStep, setClickStep] = useState<'start' | 'end'>('start');
     const [isLocating, setIsLocating] = useState(false);
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
-    // const [facilityResults, setFacilityResults] = useState<any[]>([]);
+    
     const [animating, setAnimating] = useState(false);
     const [animPhase, setAnimPhase] = useState<'idle' | 'scanning' | 'done'>('idle');
     const [view, setView] = useState<'map' | 'housing'>('map');
@@ -280,7 +280,7 @@ const App: React.FC = () => {
         return m;
     }, [locations]);
 
-    // ── Init Leaflet ────────────────────────────────────────────────────
+    
     useEffect(() => {
         if (mapRef.current) return;
         const map = L.map('map', { zoomControl: false }).setView([30.3271, 78.0315], 14);
@@ -335,7 +335,7 @@ const App: React.FC = () => {
         tileLayerRef.current.setUrl(theme === 'dark' ? darkUrl : lightUrl);
     }, [theme]);
 
-    // ── Markers ──────────────────────────────────────────────────────────
+    
     useEffect(() => {
         if (!markersLayerRef.current) return;
         markersLayerRef.current.clearLayers();
@@ -350,7 +350,7 @@ const App: React.FC = () => {
         });
     }, [locations, startId, endId]);
 
-    // ── BIDIRECTIONAL DIJKSTRA ANIMATION ─────────────────────────────────
+    
     const clearAnimation = useCallback(() => {
         animTimers.current.forEach(clearTimeout);
         animTimers.current = [];
@@ -367,7 +367,7 @@ const App: React.FC = () => {
         const allLocs = locations;
         const { adj } = buildGraph(allLocs, locationData.connections as string[][]);
 
-        // Find nearest graph nodes to start/end
+        
         let srcIdx = 0, dstIdx = 0, srcD = Infinity, dstD = Infinity;
         allLocs.forEach((l, i) => {
             const ds = Math.hypot(l.lat - startLoc.lat, l.lon - startLoc.lon);
@@ -381,10 +381,10 @@ const App: React.FC = () => {
         const layer = animLayerRef.current;
         layer.clearLayers();
 
-        const delay = 60; // ms per edge
+        const delay = 60; 
         const maxEdges = Math.max(edgesF.length, edgesB.length);
 
-        // Animate edges batch by batch
+        
         for (let i = 0; i < maxEdges; i++) {
             const t = setTimeout(() => {
                 if (i < edgesF.length) {
@@ -393,7 +393,7 @@ const App: React.FC = () => {
                     L.polyline([[la.lat, la.lon], [lb.lat, lb.lon]], {
                         color: '#1d4ed8', weight: 2.5, opacity: 0.7
                     }).addTo(layer);
-                    // Glowing node dot
+                    
                     L.circleMarker([lb.lat, lb.lon], {
                         radius: 3, fillColor: '#60a5fa', color: 'transparent', fillOpacity: 0.9
                     }).addTo(layer);
@@ -412,16 +412,16 @@ const App: React.FC = () => {
             animTimers.current.push(t);
         }
 
-        // After scan — draw final path
+        
         const finalT = setTimeout(() => {
             setAnimPhase('done');
             if (path.length > 1) {
                 const pathCoords = path.map(i => [allLocs[i].lat, allLocs[i].lon]);
-                // Glowing gold path
+                
                 L.polyline(pathCoords, { color: '#f59e0b', weight: 6, opacity: 0.95 }).addTo(layer);
                 L.polyline(pathCoords, { color: '#fde68a', weight: 2, opacity: 0.8 }).addTo(layer);
 
-                // Pulse at meeting point
+                
                 const mid = path[Math.floor(path.length / 2)];
                 L.circleMarker([allLocs[mid].lat, allLocs[mid].lon], {
                     radius: 7, fillColor: '#fff', color: '#f59e0b', weight: 3, fillOpacity: 1
@@ -493,7 +493,7 @@ const App: React.FC = () => {
 
             setStatus('Running Bidirectional Dijkstra animation...');
 
-            // Run the visual animation first
+            
             runBidirAnimation(startLoc, endLoc, async () => {
                 setStatus('Path found! Fetching road geometry...');
                 const geo = await drawFinalRoute(startLoc, endLoc);
@@ -503,13 +503,13 @@ const App: React.FC = () => {
                 setStatus(`Route found — ${dist.toFixed(1)} km · ~${timeMins} min`);
                 setLoading(false);
                 
-                // Trigger voice announcement
+                
                 handleVoiceAnnouncement(startLoc.name, endLoc.name, dist, timeMins);
             });
             return;
         }
 
-        // FACILITY MODE (LIVE SEARCH VIA GOOGLE MAPS)
+        
         setStatus(`Fetching nearest ${facilityType} via Google Maps...`);
         try {
             const res = await axios.post('http://localhost:3001/api/search-places', { 
@@ -525,10 +525,10 @@ const App: React.FC = () => {
                 return; 
             }
 
-            // The first result from Google Maps is usually the most relevant/nearest
+            
             const nearest = candidates[0];
             
-            // Add the found location to our state if it's new
+            
             if (!locations.find(l => l.id === nearest.id)) {
                 setLocations(prev => [...prev, nearest]);
             }
@@ -549,7 +549,7 @@ const App: React.FC = () => {
                 setStatus(`Nearest ${facilityType}: ${nearest.name} — ${dist.toFixed(1)} km`);
                 setLoading(false);
                 
-                // Trigger voice announcement
+                
                 handleVoiceAnnouncement(startLoc.name, nearest.name, dist, timeMins);
             });
         } catch (err) {
@@ -630,7 +630,7 @@ const App: React.FC = () => {
                         {view === 'housing' ? '🗺️ Back to Map' : '🏠 Student Housing Portal'}
                     </button>
 
-                    {/* Bidir legend */}
+                    {}
                     <div style={{ background: 'var(--input-bg)', border: '1px solid var(--border)', borderRadius: '10px', padding: '10px 14px', fontSize: '12px', color: 'var(--text-muted)' }}>
                         <div style={{ fontWeight: 700, marginBottom: '6px', color: 'var(--text-main)' }}>Bidirectional Dijkstra</div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>

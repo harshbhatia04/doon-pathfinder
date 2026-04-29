@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// helper to run the C executable and get JSON output
+
 function runCBackend(args) {
     return new Promise((resolve, reject) => {
         const child = spawn('./dijkstra.exe', args);
@@ -24,7 +24,7 @@ function runCBackend(args) {
     });
 }
 
-// api to find shortest path between two points
+
 app.post('/api/shortest-path', async (req, res) => {
     try {
         const result = await runCBackend(['path', req.body.startId, req.body.endId]);
@@ -34,7 +34,7 @@ app.post('/api/shortest-path', async (req, res) => {
     }
 });
 
-// api to find the nearest facility of a certain type
+
 app.post('/api/find-facility', async (req, res) => {
     try {
         const result = await runCBackend(['facility', req.body.startId, req.body.facilityType]);
@@ -44,10 +44,10 @@ app.post('/api/find-facility', async (req, res) => {
     }
 });
 
-// api to search for places using SerpApi near a specific location
+
 app.post('/api/search-places', async (req, res) => {
     const { query, lat, lon } = req.body;
-    // Refine query for better accuracy in India (e.g. petrol pump instead of fuel)
+    
     let refinedQuery = query;
     if (query.toLowerCase() === 'fuel') refinedQuery = 'petrol pump';
     if (query.toLowerCase() === 'ev') refinedQuery = 'ev charging station';
@@ -81,7 +81,7 @@ app.post('/api/search-places', async (req, res) => {
             lon: r.gps_coordinates?.longitude
         })).filter(r => {
             if (!r.lat || !r.lon) return false;
-            // Strict filtering for fuel
+            
             if (query.toLowerCase() === 'fuel') {
                 const cat = (r.category || '').toLowerCase();
                 const name = (r.name || '').toLowerCase();
@@ -93,7 +93,7 @@ app.post('/api/search-places', async (req, res) => {
         });
         console.log(`Returning ${formatted.length} filtered results`);
 
-        // If lat/lon provided, sort by distance to ensure truly "nearest"
+        
         if (lat && lon) {
             const getDist = (lat1, lon1, lat2, lon2) => {
                 const R = 6371;
@@ -111,7 +111,7 @@ app.post('/api/search-places', async (req, res) => {
     }
 });
 
-// api to generate voice announcement using Sarvam AI
+
 app.post('/api/voice-announcement', async (req, res) => {
     const { source, destination, distance, time, language } = req.body;
     const template = `Your travel from ${source} to ${destination} will take approximately ${time} minutes and it is ${distance} km long.`;
@@ -121,7 +121,7 @@ app.post('/api/voice-announcement', async (req, res) => {
     try {
         let textToSpeak = template;
         
-        // 1. Translate if not English
+        
         if (language !== 'en-IN') {
             try {
                 const transRes = await axios.post('https://api.sarvam.ai/translate', {
@@ -136,11 +136,11 @@ app.post('/api/voice-announcement', async (req, res) => {
                 console.log(`Translated text: ${textToSpeak}`);
             } catch (transErr) {
                 console.error('Translation Error:', transErr.response?.data || transErr.message);
-                // Fallback to English if translation fails
+                
             }
         }
 
-        // 2. Generate TTS
+        
         const ttsRes = await axios.post('https://api.sarvam.ai/text-to-speech', {
             inputs: [textToSpeak],
             target_language_code: language,

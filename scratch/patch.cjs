@@ -35,11 +35,11 @@ const newFunc = `    const handleRouteToCampus = (hostelId: string) => {
     };`;
 
 data = data.replace(targetH1, newH1);
-// Normalize newlines for the function replacement
+
 const normalize = str => str.replace(/\r\n/g, '\n').trim();
 if (!data.includes(targetH1)) console.log("H1 not found");
 
-// Regex based replacement for function to avoid whitespace issues
+
 const funcRegex = /const handleRouteToCampus[\s\S]*?mapRef\.current\.setView.*?;[\s\n]*};/;
 if (funcRegex.test(data)) {
     data = data.replace(funcRegex, newFunc.trim());

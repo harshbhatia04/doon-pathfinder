@@ -1,7 +1,7 @@
 #include "graph_data.h"
 
 int main(int argc, char* argv[]) {
-    // Expected args: ./dijkstra.exe <mode> <start_id> <end_id_or_type>
+    
     if (argc < 4) {
         printf("{\"error\": \"Incorrect arguments provided to backend engine\"}\n");
         return 1;
@@ -23,8 +23,8 @@ int main(int argc, char* argv[]) {
         printf("{\"error\": \"Unknown mode requested: %s\"}\n", mode);
     }
 
-    // Clean up would go here in a production app, but for this CLI tool 
-    // we let the OS reclaim memory on exit for maximum speed.
+    
+    
     return 0;
 }
 

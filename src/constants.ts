@@ -1,6 +1,6 @@
 export const locationData = {
     locations: [
-        // ── ROAD NETWORK SKELETON ──
+        
         { id: "j_balp", name: "Ballupur Chowk", type: "center", lat: 30.3341, lon: 78.0000 },
         { id: "j_bind", name: "Bindal Bridge", type: "center", lat: 30.3275, lon: 78.0280 },
         { id: "j_kish", name: "Kishan Nagar", type: "center", lat: 30.3256, lon: 78.0158 },
@@ -13,7 +13,7 @@ export const locationData = {
         { id: "j_clem", name: "Clement Town Junction", type: "center", lat: 30.2820, lon: 78.0100 },
         { id: "j_mah", name: "Majra Junction", type: "center", lat: 30.2950, lon: 78.0100 },
 
-        // ── POPULAR LANDMARKS (User Requested) ──
+        
         { id: "clk",  name: "Clock Tower", type: "center", lat: 30.3253, lon: 78.0413 },
         { id: "pac",  name: "Pacific Mall", type: "center", lat: 30.3665, lon: 78.0703 },
         { id: "itp",  name: "IT Park", type: "center", lat: 30.3684, lon: 78.0858 },
@@ -25,14 +25,14 @@ export const locationData = {
         { id: "pre",  name: "Prem Nagar", type: "center", lat: 30.3360, lon: 77.9621 },
         { id: "geu",  name: "Graphic Era University", type: "center", lat: 30.2689, lon: 77.9931 },
 
-        // ── EXCLUSIVE HOSTELS/PGs (Differentiator) ──
+        
         { id: "h_shree", name: "Shree Krishna PG (Boys)", type: "hostel", lat: 30.2710, lon: 77.9950, price: "₹6,500/mo", conditions: ["1 Month Deposit", "Electricity Extra"], amenities: ["WiFi", "Laundry", "Mess"], gender: "boys", phone: "+91 98765 43210", photo: "/images/img1.jpg" },
         { id: "h_girls", name: "Green View Girls Hostel", type: "hostel", lat: 30.2740, lon: 77.9920, price: "₹8,000/mo", conditions: ["No Deposit", "Curfew 9 PM"], amenities: ["AC", "Attached Bath", "Food Included"], gender: "girls", phone: "+91 91234 56789", photo: "/images/img3.jpg" },
         { id: "h_pre",   name: "Prem Nagar Premium PG", type: "hostel", lat: 30.3340, lon: 77.9650, price: "₹5,500/mo", conditions: ["Student ID Required"], amenities: ["WiFi", "RO Water"], gender: "coed", phone: "+91 99887 76655", photo: "/images/img2.jpg" },
         { id: "h_bal",   name: "Ballupur Student Accom", type: "hostel", lat: 30.3320, lon: 78.0050, price: "₹7,200/mo", conditions: ["2 Months Deposit", "11 Month Lock-in"], amenities: ["Gym", "Library", "Meals"], gender: "boys", phone: "+91 98765 12345", photo: "/images/img4.jpg" },
 
 
-        // ── FETCHED REAL LOCATIONS ──
+        
         { "id": "ChIJzQviZE4pCTkRnrSaEy9Yqy8", "name": "Shri Mahant Indiresh Hospital", "type": "hospital", "lat": 30.3045476, "lon": 78.02080269999999 },
         { "id": "ChIJIY7xBLkpCTkR36VRFLupqqs", "name": "City Heart Centre", "type": "hospital", "lat": 30.313376199999997, "lon": 78.0497074 },
         { "id": "ChIJS1u_XA4pCTkR054wcCVe9Ng", "name": "Kanishk Surgical Hospital", "type": "hospital", "lat": 30.2915861, "lon": 78.05076679999999 },
@@ -48,17 +48,17 @@ export const locationData = {
         { "id": "ChIJb9ZCUR8pCTkRcwwiEfXdwcU", "name": "Railway Station Parking", "type": "parking", "lat": 30.3146624, "lon": 78.033903 }
     ],
     connections: [
-        // Chakrata Road Chain
+        
         ["pre", "j_chak_mid"], ["j_chak_mid", "fri"], ["fri", "j_balp"], ["j_balp", "j_kish"], ["j_kish", "j_bind"], ["j_bind", "clk"],
-        // Rajpur Road Chain
+        
         ["clk", "j_dill"], ["j_dill", "j_raj_1"], ["j_raj_1", "pac"], ["pac", "itp"], ["itp", "j_raj_2"], ["j_raj_2", "sah"],
-        // Saharanpur Road Chain
+        
         ["isbt", "j_mah"], ["j_mah", "j_clem"], ["j_clem", "geu"], ["isbt", "j_shc"], ["j_shc", "j_prince"],
-        // Haridwar Road Chain
+        
         ["clk", "j_prince"], ["j_prince", "scm"], ["scm", "isbt"],
-        // Crossroad Mall connects near Clock Tower/Dillaram
+        
         ["clk", "crm"], ["crm", "j_dill"],
-        // Hostels connections
+        
         ["h_shree", "geu"], ["h_girls", "geu"], ["h_pre", "pre"], ["h_bal", "j_balp"]
     ]
 };

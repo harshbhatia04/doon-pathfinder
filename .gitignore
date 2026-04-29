@@ -25,3 +25,5 @@ dist-ssr
 *.exe
 compile_errors.txt
 backend/node_modules
+.env
+backend/.env

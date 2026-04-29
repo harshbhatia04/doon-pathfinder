@@ -31,7 +31,7 @@ typedef struct {
     int numNodes;
 } Graph;
 
-// Functions
+
 double get_distance(double lat1, double lon1, double lat2, double lon2);
 int get_node_index(Graph* g, const char* id);
 void add_node(Graph* g, const char* id, const char* name, double lat, double lon, const char* type);
