@@ -25,5 +25,7 @@ dist-ssr
 *.exe
 compile_errors.txt
 backend/node_modules
-.env
-backend/.env
+
+# .env files are allowed for this project demo
+# .env
+# backend/.env
