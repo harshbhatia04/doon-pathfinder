@@ -50,9 +50,9 @@ app.post('/api/find-facility', async (req, res) => {
 app.post('/api/search-places', async (req, res) => {
     const { query, lat, lon } = req.body;
     
-    let refinedQuery = query;
-    if (query.toLowerCase() === 'fuel') refinedQuery = 'petrol pump';
-    if (query.toLowerCase() === 'ev') refinedQuery = 'ev charging station';
+    let refinedQuery = query + ", Dehradun";
+    if (query.toLowerCase() === 'fuel') refinedQuery = 'petrol pump, Dehradun';
+    if (query.toLowerCase() === 'ev') refinedQuery = 'ev charging station, Dehradun';
     if (query.toLowerCase() === 'hostel') refinedQuery = 'hostel pg dehradun';
 
     const location = lat && lon ? `@${lat},${lon},15z` : '@30.3271,78.0315,15z';

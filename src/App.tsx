@@ -42,7 +42,7 @@ const getHaversineDistance = (lat1: number, lon1: number, lat2: number, lon2: nu
     const dLat = (lat2 - lat1) * Math.PI / 180;
     const dLon = (lon2 - lon1) * Math.PI / 180;
     const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
-    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)) * 1.18; // 1.18 multiplier to approximate road distance
 };
 
 
@@ -58,6 +58,23 @@ function buildGraph(locations: Location[], connections: string[][]) {
         adj[ai].push({ to: bi, w });
         adj[bi].push({ to: ai, w });
     });
+
+    // Auto-connect isolated nodes (e.g. dynamic hostels or user position)
+    adj.forEach((edges, i) => {
+        if (edges.length === 0) {
+            let best = -1, bestD = Infinity;
+            locations.forEach((l, j) => {
+                if (i === j) return;
+                const d = getHaversineDistance(locations[i].lat, locations[i].lon, l.lat, l.lon);
+                if (d < bestD) { bestD = d; best = j; }
+            });
+            if (best !== -1) {
+                adj[i].push({ to: best, w: bestD });
+                adj[best].push({ to: i, w: bestD });
+            }
+        }
+    });
+
     return { adj, idxMap };
 }
 
@@ -570,6 +587,13 @@ const App: React.FC = () => {
         document.documentElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
     }, [theme]);
+
+    useEffect(() => {
+        if (startId && endId && mode === 'route' && !loading) {
+            handleSearch();
+        }
+    }, [startId, endId, mode]);
+
     const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
 
     const mapRef = useRef<any>(null);
@@ -617,16 +641,38 @@ const App: React.FC = () => {
         map.on('locationfound', (e: any) => {
             const { lat, lng } = e.latlng;
             const accuracy = e.accuracy;
-            const userNode: Location = { id: 'user_pos', name: 'My Current Location', type: 'user', lat, lon: lng };
+            
+            // Dehradun Guard: If user is too far (e.g. in Delhi), snap to Dehradun Center for demo
+            const distFromDehradun = Math.hypot(lat - 30.3271, lng - 78.0315) * 111; 
+            let finalLat = lat, finalLon = lng, isFallback = false;
+            
+            if (distFromDehradun > 50) {
+                console.log("User outside Dehradun, snapping to Clock Tower for demo.");
+                finalLat = 30.3253; finalLon = 78.0413;
+                isFallback = true;
+            }
+
+            const userNode: Location = { 
+                id: 'user_pos', 
+                name: isFallback ? '📍 Dehradun Center (Demo)' : 'My Current Location', 
+                type: 'user', 
+                lat: finalLat, 
+                lon: finalLon 
+            };
+
             setLocations(prev => [...prev.filter(l => l.id !== 'user_pos'), userNode]);
             setStartId('user_pos');
             setIsLocating(false);
+
             if (gpsMarkerRef.current) map.removeLayer(gpsMarkerRef.current);
             const gpsDotHtml = `<div class="gps-dot-wrapper"><div class="gps-dot-ring"></div><div class="gps-dot"></div></div>`;
             const icon = L.divIcon({ className: '', html: gpsDotHtml, iconSize: [20, 20], iconAnchor: [10, 10] });
-            gpsMarkerRef.current = L.marker([lat, lng], { icon }).bindPopup(`<b>📍 You are here</b><br><small>±${Math.round(accuracy)}m</small>`).addTo(map);
-            map.flyTo([lat, lng], 17, { animate: true, duration: 1.2 });
-            setStatus(`📡 Location found (±${Math.round(accuracy)}m)`);
+            gpsMarkerRef.current = L.marker([finalLat, finalLon], { icon })
+                .bindPopup(isFallback ? `<b>🏙️ Demo Mode</b><br>Detected you are outside Dehradun.<br>Snapping to Clock Tower.` : `<b>📍 You are here</b><br><small>±${Math.round(accuracy)}m</small>`)
+                .addTo(map);
+
+            map.flyTo([finalLat, finalLon], 15, { animate: true, duration: 1.2 });
+            setStatus(isFallback ? `🏙️ Outside Dehradun (Snapping to Center)` : `📡 Location found (±${Math.round(accuracy)}m)`);
         });
 
         map.on('locationerror', (e: any) => {
@@ -790,13 +836,29 @@ const App: React.FC = () => {
         setResult(null);
         routeLayerRef.current?.clearLayers();
 
-        const startLoc = locationMap.get(startId) || locations.find(l => l.id === startId);
+        let startLoc = locationMap.get(startId) || locations.find(l => l.id === startId);
         if (!startLoc) { setStatus('⚠ Could not find start location.'); setLoading(false); return; }
+
+        // Fix: If user selected "My Current Location" but GPS hasn't fired yet (lat/lon are 0)
+        if (startId === 'current_loc' && startLoc.lat === 0) {
+            setStatus('📡 Fetching your real-time location...');
+            useCurrentLocation();
+            setLoading(false);
+            return;
+        }
 
         if (mode === 'route') {
             if (!endId) { setStatus('⚠ Select a destination.'); setLoading(false); return; }
             const endLoc = locationMap.get(endId) || locations.find(l => l.id === endId);
             if (!endLoc) { setStatus('⚠ Could not find destination.'); setLoading(false); return; }
+
+            // Fix: If user selected "My Current Location" as destination but GPS hasn't fired yet
+            if (endId === 'current_loc' && endLoc.lat === 0) {
+                setStatus('📡 Fetching your real-time location for destination...');
+                useCurrentLocation();
+                setLoading(false);
+                return;
+            }
 
             setStatus('Running Bidirectional Dijkstra animation...');
 
@@ -867,8 +929,12 @@ const App: React.FC = () => {
     };
 
     const displayLocations = useMemo(() => {
-        const base = locations.filter(l => l.id !== 'current_loc');
-        return [{ id: 'current_loc', name: '📍 My Current Location', type: 'user', lat: 0, lon: 0 }, ...base];
+        const base = locations.filter(l => l.id !== 'current_loc' && l.id !== 'user_pos');
+        const gpsNode = locations.find(l => l.id === 'user_pos');
+        return [
+            gpsNode || { id: 'current_loc', name: '📍 My Current Location', type: 'user', lat: 0, lon: 0 },
+            ...base
+        ];
     }, [locations]);
 
     const handleRouteToCampus = (hostelId: string) => {
@@ -987,24 +1053,27 @@ const App: React.FC = () => {
                 <div id="control-panel">
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
                         <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em' }}>📍 Pathfinder</div>
-                        <button 
-                            className="btn-primary" 
-                            style={{ 
-                                background: '#ef4444', 
-                                color: 'white', 
-                                border: 'none', 
-                                fontWeight: 800, 
-                                fontSize: '12px', 
-                                padding: '8px 16px', 
-                                borderRadius: '30px',
-                                boxShadow: '0 4px 10px rgba(239, 68, 68, 0.3)', 
-                                animation: 'pulse-red 2s infinite',
-                                cursor: 'pointer'
-                            }}
-                            onClick={handleSOS}
-                        >
-                            🚨 SOS
-                        </button>
+                        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+                            <ThemeToggle theme={theme} toggle={toggleTheme} />
+                            <button 
+                                className="btn-primary" 
+                                style={{ 
+                                    background: '#ef4444', 
+                                    color: 'white', 
+                                    border: 'none', 
+                                    fontWeight: 800, 
+                                    fontSize: '12px', 
+                                    padding: '8px 16px', 
+                                    borderRadius: '30px',
+                                    boxShadow: '0 4px 10px rgba(239, 68, 68, 0.3)', 
+                                    animation: 'pulse-red 2s infinite',
+                                    cursor: 'pointer'
+                                }}
+                                onClick={handleSOS}
+                            >
+                                🚨 SOS
+                            </button>
+                        </div>
                     </div>
 
                     <button 
