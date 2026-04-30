@@ -12,10 +12,36 @@ This project is a **Smart Vehicle Service & Facility Finder** for Dehradun city.
 - Facility-finding logic (nearest neighbor search using graph algorithms).
 - Web-based interactive map for visualization.
 
-## How to Run
-1. **Backend**: 
-   - Compile the C code in `backend/` using `gcc`.
-   - Start the Node server: `node server.js`
-2. **Frontend**:
-   - Run `npm run dev` in the root folder.
-   - Open `http://localhost:5173`.
+## 🛠️ Setup Instructions
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/harshbhatia04/doon-pathfinder.git
+cd doon-pathfinder
+```
+
+### 2. Install Dependencies
+```bash
+# Install Frontend dependencies
+npm install
+
+# Install Backend dependencies
+cd backend
+npm install
+cd ..
+```
+
+### 3. Environment Setup (CRITICAL)
+Since API keys are sensitive, they are not included in the repository. To run the app, you must:
+1. Go to the `backend` folder.
+2. Rename `.env.example` to `.env`.
+3. Open `.env` and paste your own API keys for **SerpApi** and **Sarvam AI**.
+
+### 4. Run the Project
+```bash
+# Start Backend (in /backend folder)
+npm start
+
+# Start Frontend (in root folder)
+npm run dev
+```
