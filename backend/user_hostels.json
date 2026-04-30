@@ -1,0 +1,54 @@
+[
+  {
+    "name": "Final Test PG",
+    "price": "6000",
+    "address": "Downtown",
+    "gender": "coed",
+    "phone": "1231231234",
+    "amenities": [],
+    "lat": 30.3271,
+    "lon": 78.0315,
+    "conditions": [
+      "Verified User Listing"
+    ],
+    "photo": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1000",
+    "id": "user_1777512567038_pp4s2",
+    "type": "hostel"
+  },
+  {
+    "name": "Bhavya PG",
+    "price": "6500",
+    "address": "near buddha temple",
+    "gender": "coed",
+    "phone": "7302915718",
+    "amenities": [
+      "ELECTRICITY INCLUDED"
+    ],
+    "lat": 30.3271,
+    "lon": 78.0315,
+    "conditions": [
+      "Verified User Listing"
+    ],
+    "photo": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1000",
+    "id": "user_1777512801719_eywpj",
+    "type": "hostel"
+  },
+  {
+    "name": "LUXURY PG",
+    "price": "6500/-",
+    "address": "near buddha temple",
+    "gender": "coed",
+    "phone": "7302915718",
+    "amenities": [
+      "ELECTRICITY INCLUDED"
+    ],
+    "lat": 30.2641,
+    "lon": 77.9857,
+    "conditions": [
+      "Verified User Listing"
+    ],
+    "photo": "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1000",
+    "id": "user_1777513059203_al6ca",
+    "type": "hostel"
+  }
+]

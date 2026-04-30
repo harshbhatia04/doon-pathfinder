@@ -3,6 +3,8 @@ const express = require('express');
 const { spawn } = require('child_process');
 const cors = require('cors');
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 const app = express();
 
 app.use(cors());
@@ -78,7 +80,8 @@ app.post('/api/search-places', async (req, res) => {
                   (query.toLowerCase().includes('parking') ? 'parking' : 
                   (query.toLowerCase().includes('hostel') ? 'hostel' : 'center'))))),
             lat: r.gps_coordinates?.latitude,
-            lon: r.gps_coordinates?.longitude
+            lon: r.gps_coordinates?.longitude,
+            address: r.address || r.vicinity || ''
         })).filter(r => {
             if (!r.lat || !r.lon) return false;
             
@@ -163,6 +166,72 @@ app.post('/api/voice-announcement', async (req, res) => {
     } catch (err) {
         console.error('Sarvam API Error:', err.response?.data || err.message);
         res.status(500).json({ error: 'failed to generate voice announcement' });
+    }
+});
+
+const USER_HOSTELS_FILE = path.join(__dirname, 'user_hostels.json');
+
+app.get('/api/user-hostels', (req, res) => {
+    try {
+        if (!fs.existsSync(USER_HOSTELS_FILE)) return res.json([]);
+        const data = fs.readFileSync(USER_HOSTELS_FILE, 'utf8');
+        res.json(JSON.parse(data || '[]'));
+    } catch (err) {
+        res.status(500).json({ error: 'failed to read user hostels' });
+    }
+});
+
+app.post('/api/upload-hostel', (req, res) => {
+    try {
+        const newHostel = {
+            ...req.body,
+            id: `user_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+            type: 'hostel'
+        };
+        let hostels = [];
+        if (fs.existsSync(USER_HOSTELS_FILE)) {
+            hostels = JSON.parse(fs.readFileSync(USER_HOSTELS_FILE, 'utf8') || '[]');
+        }
+        hostels.push(newHostel);
+        fs.writeFileSync(USER_HOSTELS_FILE, JSON.stringify(hostels, null, 2));
+        res.json({ success: true, hostel: newHostel });
+    } catch (err) {
+        res.status(500).json({ error: 'failed to save hostel' });
+    }
+});
+
+const REVIEWS_FILE = path.join(__dirname, 'reviews.json');
+
+app.get('/api/reviews', (req, res) => {
+    try {
+        if (!fs.existsSync(REVIEWS_FILE)) return res.json([]);
+        const data = fs.readFileSync(REVIEWS_FILE, 'utf8');
+        res.json(JSON.parse(data || '[]'));
+    } catch (err) {
+        res.status(500).json({ error: 'failed to read reviews' });
+    }
+});
+
+app.post('/api/reviews', (req, res) => {
+    try {
+        const { hostelId, rating, comment, userName } = req.body;
+        const newReview = {
+            id: `rev_${Date.now()}`,
+            hostelId,
+            rating: parseInt(rating),
+            comment,
+            userName,
+            date: new Date().toISOString()
+        };
+        let reviews = [];
+        if (fs.existsSync(REVIEWS_FILE)) {
+            reviews = JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8') || '[]');
+        }
+        reviews.push(newReview);
+        fs.writeFileSync(REVIEWS_FILE, JSON.stringify(reviews, null, 2));
+        res.json({ success: true, review: newReview });
+    } catch (err) {
+        res.status(500).json({ error: 'failed to save review' });
     }
 });
 

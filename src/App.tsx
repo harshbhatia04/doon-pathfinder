@@ -10,12 +10,22 @@ export interface Location {
     type: string;
     lat: number;
     lon: number;
+    address?: string;
     price?: string;
     conditions?: string[];
     amenities?: string[];
     gender?: 'boys' | 'girls' | 'coed';
     phone?: string;
     photo?: string | string[];
+}
+
+export interface Review {
+    id: string;
+    hostelId: string;
+    rating: number;
+    comment: string;
+    userName: string;
+    date: string;
 }
 
 const TYPE_COLORS: Record<string, string> = {
@@ -170,70 +180,277 @@ const Combobox: React.FC<{
 
 const HousingDashboard: React.FC<{
     locations: Location[];
+    reviews: Review[];
     onRouteToCampus: (hostelId: string) => void;
-}> = ({ locations, onRouteToCampus }) => {
+    onOpenUpload: () => void;
+    onAddReview: (hostelId: string, rating: number, comment: string, userName: string) => void;
+}> = ({ locations, reviews, onRouteToCampus, onOpenUpload, onAddReview }) => {
     const hostels = locations.filter(l => l.type === 'hostel');
+    const [selectedHostelForReview, setSelectedHostelForReview] = useState<string | null>(null);
+
+    const renderStars = (rating: number) => {
+        return (
+            <div style={{ display: 'flex', gap: '2px', color: '#f59e0b' }}>
+                {[1, 2, 3, 4, 5].map(i => (
+                    <span key={i} style={{ fontSize: '14px' }}>{i <= rating ? '★' : '☆'}</span>
+                ))}
+            </div>
+        );
+    };
+
     return (
         <div style={{ padding: '40px', overflowY: 'auto', width: '100%', background: 'var(--bg-page)', color: 'var(--text-main)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
                 <h1 style={{ fontSize: '32px', fontWeight: 800, color: 'var(--primary)', margin: 0 }}>🏠 Student Housing Portal</h1>
-                <button className="btn-secondary" onClick={() => onRouteToCampus('')} style={{ fontSize: '14px', padding: '8px 16px', background: 'var(--bg-card)' }}>
-                    ✕ Close Portal
-                </button>
+                <div style={{ display: 'flex', gap: '12px' }}>
+                    <button className="btn-primary" onClick={onOpenUpload} style={{ fontSize: '14px', padding: '8px 20px' }}>
+                        + List Your Property
+                    </button>
+                    <button className="btn-secondary" onClick={() => onRouteToCampus('')} style={{ fontSize: '14px', padding: '8px 16px', background: 'var(--bg-card)' }}>
+                        ✕ Close
+                    </button>
+                </div>
             </div>
             <p style={{ color: 'var(--text-muted)', marginBottom: '32px', fontSize: '16px' }}>Exclusive, verified student accommodations in Dehradun.</p>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '24px' }}>
-                {hostels.map(h => (
-                    <div key={h.id} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow)', display: 'flex', flexDirection: 'column' }}>
-                        {h.photo && (
-                            Array.isArray(h.photo) ? (
-                                <div className="photo-carousel" style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
-                                    {h.photo.map((p, i) => (
-                                        <img key={i} src={p} alt={`${h.name} ${i}`} style={{ width: '100%', flexShrink: 0, height: '200px', objectFit: 'cover', scrollSnapAlign: 'start' }} />
-                                    ))}
+                {hostels.map(h => {
+                    const hostelReviews = reviews.filter(r => r.hostelId === h.id);
+                    const avgRating = hostelReviews.length > 0 ? hostelReviews.reduce((acc, r) => acc + r.rating, 0) / hostelReviews.length : 0;
+                    
+                    return (
+                        <div key={h.id} style={{ background: 'var(--bg-card)', borderRadius: '16px', border: '1px solid var(--border)', overflow: 'hidden', boxShadow: 'var(--shadow)', display: 'flex', flexDirection: 'column' }}>
+                            {h.photo && (
+                                Array.isArray(h.photo) ? (
+                                    <div className="photo-carousel" style={{ display: 'flex', overflowX: 'auto', scrollSnapType: 'x mandatory', WebkitOverflowScrolling: 'touch' }}>
+                                        {h.photo.map((p, i) => (
+                                            <img key={i} src={p} alt={`${h.name} ${i}`} style={{ width: '100%', flexShrink: 0, height: '200px', objectFit: 'cover', scrollSnapAlign: 'start' }} />
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <img src={h.photo as string} alt={h.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                                )
+                            )}
+                            <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                                    <h3 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>{h.name}</h3>
+                                    <span style={{ background: h.gender === 'girls' ? '#fbcfe8' : h.gender === 'boys' ? '#bfdbfe' : 'var(--input-bg)', color: h.gender === 'girls' ? '#be185d' : h.gender === 'boys' ? '#1d4ed8' : 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>
+                                        {h.gender || 'coed'}
+                                    </span>
                                 </div>
-                            ) : (
-                                <img src={h.photo as string} alt={h.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
-                            )
-                        )}
-                        <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                                <h3 style={{ fontSize: '20px', fontWeight: 700, margin: 0 }}>{h.name}</h3>
-                                <span style={{ background: h.gender === 'girls' ? '#fbcfe8' : h.gender === 'boys' ? '#bfdbfe' : 'var(--input-bg)', color: h.gender === 'girls' ? '#be185d' : h.gender === 'boys' ? '#1d4ed8' : 'var(--text-main)', padding: '4px 8px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, textTransform: 'uppercase' }}>
-                                    {h.gender || 'coed'}
-                                </span>
-                            </div>
-                            <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', marginBottom: '16px' }}>
-                                {h.price || 'Price on Request'}
-                            </div>
-                            
-                            <div style={{ marginBottom: '16px' }}>
-                                <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Amenities</div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {h.amenities?.map(a => <span key={a} style={{ background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>✓ {a}</span>)}
+                                
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
+                                    {renderStars(Math.round(avgRating))}
+                                    <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
+                                        {avgRating > 0 ? `${avgRating.toFixed(1)} (${hostelReviews.length} reviews)` : 'No reviews yet'}
+                                    </span>
                                 </div>
-                            </div>
 
-                                                        <div style={{ marginBottom: '24px' }}>
-                                <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Conditions</div>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {h.conditions?.map(c => <span key={c} style={{ border: '1px solid var(--border)', padding: '4px 10px', borderRadius: '6px', fontSize: '12px', fontWeight: 500 }}>{c}</span>)}
+                                <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', marginBottom: '16px' }}>
+                                    {h.price || 'Price on Request'}
                                 </div>
-                            </div>
-                            
-                            <div style={{ display: 'flex', gap: '12px', marginTop: 'auto' }}>
-                                <button className="btn-primary" style={{ flex: 1, padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => onRouteToCampus(h.id)}>
-                                    📍 Route
-                                </button>
-                                {h.phone && (
-                                    <a href={`tel:${h.phone.replace(/\s+/g, '')}`} className="btn-secondary" style={{ flex: 1, padding: '12px', fontSize: '14px', textDecoration: 'none', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', boxSizing: 'border-box' }}>
-                                        📞 Contact
-                                    </a>
+
+                                {h.address && (
+                                    <div style={{ fontSize: '14px', color: 'var(--text-muted)', marginBottom: '16px', display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                                        <span style={{ fontSize: '16px' }}>📍</span>
+                                        <span>{h.address}</span>
+                                    </div>
+                                )}
+                                
+                                <div style={{ marginBottom: '16px' }}>
+                                    <div style={{ fontSize: '12px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '8px', letterSpacing: '0.05em' }}>Amenities</div>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                        {h.amenities?.map(a => <span key={a} style={{ background: 'var(--input-bg)', padding: '4px 10px', borderRadius: '20px', fontSize: '12px', fontWeight: 600 }}>✓ {a}</span>)}
+                                    </div>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '12px', marginTop: 'auto' }}>
+                                    <button className="btn-primary" style={{ flex: 1, padding: '12px', fontSize: '14px', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => onRouteToCampus(h.id)}>
+                                        📍 Route
+                                    </button>
+                                    <button className="btn-secondary" style={{ flex: 1, padding: '12px', fontSize: '14px' }} onClick={() => setSelectedHostelForReview(selectedHostelForReview === h.id ? null : h.id)}>
+                                        💬 Reviews
+                                    </button>
+                                </div>
+
+                                {selectedHostelForReview === h.id && (
+                                    <div style={{ marginTop: '20px', borderTop: '1px solid var(--border)', paddingTop: '20px' }}>
+                                        <div style={{ marginBottom: '16px' }}>
+                                            <div style={{ fontSize: '14px', fontWeight: 700, marginBottom: '12px' }}>Student Reviews</div>
+                                            {hostelReviews.length === 0 ? (
+                                                <p style={{ fontSize: '13px', color: 'var(--text-muted)', fontStyle: 'italic' }}>Be the first to review this property!</p>
+                                            ) : (
+                                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                                    {hostelReviews.map(r => (
+                                                        <div key={r.id} style={{ background: 'var(--input-bg)', padding: '12px', borderRadius: '10px' }}>
+                                                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '4px' }}>
+                                                                <span style={{ fontSize: '13px', fontWeight: 700 }}>{r.userName}</span>
+                                                                {renderStars(r.rating)}
+                                                            </div>
+                                                            <p style={{ fontSize: '13px', margin: 0, color: 'var(--text-main)' }}>{r.comment}</p>
+                                                            <div style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '4px' }}>{new Date(r.date).toLocaleDateString()}</div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <ReviewForm hostelId={h.id} onAdd={onAddReview} />
+                                    </div>
                                 )}
                             </div>
                         </div>
-                    </div>
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+const ReviewForm: React.FC<{ hostelId: string; onAdd: (hostelId: string, rating: number, comment: string, userName: string) => void }> = ({ hostelId, onAdd }) => {
+    const [rating, setRating] = useState(5);
+    const [comment, setComment] = useState('');
+    const [userName, setUserName] = useState('');
+
+    const handleSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!comment || !userName) return;
+        onAdd(hostelId, rating, comment, userName);
+        setComment('');
+        setUserName('');
+        setRating(5);
+    };
+
+    return (
+        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', background: 'var(--bg-page)', padding: '16px', borderRadius: '12px', border: '1px solid var(--border)' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700 }}>Rate this Hostel</div>
+            <div style={{ display: 'flex', gap: '6px' }}>
+                {[1, 2, 3, 4, 5].map(i => (
+                    <span key={i} onClick={() => setRating(i)} style={{ cursor: 'pointer', fontSize: '20px', color: i <= rating ? '#f59e0b' : 'var(--text-muted)' }}>
+                        {i <= rating ? '★' : '☆'}
+                    </span>
                 ))}
+            </div>
+            <input required className="combo-input" style={{ fontSize: '13px', padding: '8px 12px' }} placeholder="Your Name" value={userName} onChange={e => setUserName(e.target.value)} />
+            <textarea required className="combo-input" style={{ fontSize: '13px', padding: '8px 12px', minHeight: '60px', resize: 'vertical' }} placeholder="Your feedback..." value={comment} onChange={e => setComment(e.target.value)} />
+            <button type="submit" className="btn-primary" style={{ padding: '8px', fontSize: '13px' }}>Post Review</button>
+        </form>
+    );
+};
+
+
+const UploadModal: React.FC<{ isOpen: boolean; onClose: () => void; onUpload: (data: Partial<Location>) => void }> = ({ isOpen, onClose, onUpload }) => {
+    const [formData, setFormData] = useState({
+        name: '', price: '', address: '', gender: 'coed', phone: '', amenities: '', lat: 0, lon: 0, photo: ''
+    });
+    const [isLocating, setIsLocating] = useState(false);
+    const [locStatus, setLocStatus] = useState<'idle' | 'success' | 'error'>('idle');
+
+    if (!isOpen) return null;
+
+    const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setFormData({ ...formData, photo: reader.result as string });
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const captureLocation = () => {
+        setIsLocating(true);
+        setLocStatus('idle');
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                setFormData({ ...formData, lat: pos.coords.latitude, lon: pos.coords.longitude });
+                setIsLocating(false);
+                setLocStatus('success');
+            },
+            (err) => {
+                console.error(err);
+                setIsLocating(false);
+                setLocStatus('error');
+            },
+            { enableHighAccuracy: true, timeout: 10000 }
+        );
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        onUpload({
+            ...formData,
+            amenities: formData.amenities.split(',').map(s => s.trim()).filter(s => s),
+            conditions: ["Verified GPS Listing"],
+            photo: formData.photo || "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?auto=format&fit=crop&q=80&w=1000"
+        });
+    };
+
+    return (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 3000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(4px)', padding: '20px' }}>
+            <div style={{ background: 'var(--bg-page)', width: '100%', maxWidth: '500px', borderRadius: '20px', padding: '32px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', border: '1px solid var(--border)', position: 'relative', maxHeight: '90vh', overflowY: 'auto' }}>
+                <button onClick={onClose} style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: 'var(--text-muted)' }}>✕</button>
+                <h2 style={{ margin: '0 0 24px 0', fontSize: '24px', fontWeight: 800 }}>List Your Property</h2>
+                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                    <div className="field-group">
+                        <label className="field-label">PG/HOSTEL NAME</label>
+                        <input required className="combo-input" value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} placeholder="e.g. Skyline Student Living" />
+                    </div>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <div className="field-group">
+                            <label className="field-label">PRICE PER MONTH</label>
+                            <input required className="combo-input" value={formData.price} onChange={e => setFormData({ ...formData, price: e.target.value })} placeholder="₹8,500/mo" />
+                        </div>
+                        <div className="field-group">
+                            <label className="field-label">GENDER</label>
+                            <select className="combo-input" value={formData.gender} onChange={e => setFormData({ ...formData, gender: e.target.value as any })}>
+                                <option value="coed">Co-ed</option>
+                                <option value="boys">Boys Only</option>
+                                <option value="girls">Girls Only</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="field-group">
+                        <label className="field-label">VERIFY LOCATION</label>
+                        <button type="button" className="btn-secondary" onClick={captureLocation} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', border: locStatus === 'success' ? '1px solid #22c55e' : '1px solid var(--border)', background: locStatus === 'success' ? 'rgba(34, 197, 94, 0.1)' : 'var(--input-bg)' }}>
+                            {isLocating ? '📡 Locating...' : locStatus === 'success' ? '✅ Location Verified' : '📍 Capture Current Location'}
+                        </button>
+                        {formData.lat !== 0 && (
+                            <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', textAlign: 'center' }}>
+                                Coordinates Captured: {formData.lat.toFixed(4)}, {formData.lon.toFixed(4)}
+                            </div>
+                        )}
+                        {locStatus === 'error' && <div style={{ fontSize: '11px', color: '#ef4444', marginTop: '4px', textAlign: 'center' }}>⚠ Could not access GPS. Please check permissions.</div>}
+                    </div>
+
+                    <div className="field-group">
+                        <label className="field-label">ADDRESS (for display)</label>
+                        <input required className="combo-input" value={formData.address} onChange={e => setFormData({ ...formData, address: e.target.value })} placeholder="Street name, Area..." />
+                    </div>
+                    <div className="field-group">
+                        <label className="field-label">PHONE NUMBER</label>
+                        <input required className="combo-input" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} placeholder="+91 00000 00000" />
+                    </div>
+                    <div className="field-group">
+                        <label className="field-label">UPLOAD PHOTO</label>
+                        <input type="file" accept="image/*" className="combo-input" onChange={handlePhotoChange} style={{ padding: '8px' }} />
+                        {formData.photo && (
+                            <div style={{ marginTop: '10px', borderRadius: '10px', overflow: 'hidden', height: '100px', border: '1px solid var(--border)' }}>
+                                <img src={formData.photo} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            </div>
+                        )}
+                    </div>
+                    <div className="field-group">
+                        <label className="field-label">AMENITIES (comma separated)</label>
+                        <input className="combo-input" value={formData.amenities} onChange={e => setFormData({ ...formData, amenities: e.target.value })} placeholder="WiFi, AC, Food, Laundry" />
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px', marginTop: '12px' }}>
+                        <button type="submit" className="btn-primary" style={{ flex: 1 }}>
+                            Submit Listing
+                        </button>
+                        <button type="button" className="btn-secondary" onClick={onClose} style={{ flex: 1 }}>Cancel</button>
+                    </div>
+                </form>
             </div>
         </div>
     );
@@ -258,6 +475,96 @@ const App: React.FC = () => {
     const [view, setView] = useState<'map' | 'housing'>('map');
     const [language, setLanguage] = useState('en-IN');
     const [isSpeaking, setIsSpeaking] = useState(false);
+    const [isUploadOpen, setIsUploadOpen] = useState(false);
+    const [reviews, setReviews] = useState<Review[]>([]);
+    const [isSOSModalOpen, setIsSOSModalOpen] = useState(false);
+    const [sosHospital, setSosHospital] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                
+                const hostelRes = await axios.get('http://localhost:3001/api/user-hostels');
+                if (hostelRes.data && Array.isArray(hostelRes.data)) {
+                    setLocations(prev => {
+                        const existingIds = new Set(prev.map(l => l.id));
+                        const newHostels = hostelRes.data.filter((h: any) => !existingIds.has(h.id));
+                        return [...prev, ...newHostels];
+                    });
+                }
+                
+                const reviewRes = await axios.get('http://localhost:3001/api/reviews');
+                if (reviewRes.data && Array.isArray(reviewRes.data)) {
+                    setReviews(reviewRes.data);
+                }
+            } catch (err) {
+                console.error('Failed to fetch data:', err);
+            }
+        };
+        fetchData();
+    }, []);
+
+    const handleAddReview = async (hostelId: string, rating: number, comment: string, userName: string) => {
+        try {
+            const res = await axios.post('http://localhost:3001/api/reviews', { hostelId, rating, comment, userName });
+            if (res.data.success) {
+                setReviews(prev => [...prev, res.data.review]);
+                setStatus(`✅ Review added for ${locationMap.get(hostelId)?.name || 'hostel'}`);
+            }
+        } catch (err) {
+            setStatus('❌ Failed to add review.');
+        }
+    };
+
+    const handleUploadHostel = async (data: Partial<Location>) => {
+        try {
+            setStatus('🛰️ Accessing GPS location...');
+            
+            const getCoords = () => new Promise<{lat: number, lon: number}>((resolve, reject) => {
+                if (!navigator.geolocation) {
+                    reject(new Error("Geolocation not supported"));
+                    return;
+                }
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => resolve({ lat: pos.coords.latitude, lon: pos.coords.longitude }),
+                    (err) => reject(err),
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            });
+
+            let coords;
+            try {
+                coords = await getCoords();
+                setStatus('✅ Current location captured!');
+            } catch (e) {
+                console.error('GPS error:', e);
+                setStatus('⚠ GPS failed. Attempting geocoding fallback...');
+                try {
+                    const geoRes = await axios.get(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(data.address + ", Dehradun")}&limit=1`, {
+                        headers: { 'User-Agent': 'Pathfinder-Dehradun-App' }
+                    });
+                    if (geoRes.data && geoRes.data.length > 0) {
+                        coords = { lat: parseFloat(geoRes.data[0].lat), lon: parseFloat(geoRes.data[0].lon) };
+                    } else {
+                        coords = { lat: 30.3271, lon: 78.0315 };
+                    }
+                } catch (ge) {
+                    coords = { lat: 30.3271, lon: 78.0315 };
+                }
+            }
+
+            setStatus('📤 Uploading listing...');
+            const finalData = { ...data, lat: coords.lat, lon: coords.lon };
+            const res = await axios.post('http://localhost:3001/api/upload-hostel', finalData);
+            if (res.data.success) {
+                setLocations(prev => [...prev, res.data.hostel]);
+                setStatus('✅ Hostel listed successfully!');
+                setIsUploadOpen(false); 
+            }
+        } catch (err) {
+            setStatus('❌ Failed to upload hostel.');
+        }
+    };
 
     useEffect(() => {
         document.documentElement.setAttribute('data-theme', theme);
@@ -579,16 +886,77 @@ const App: React.FC = () => {
         }
     };
 
-    const handleVoiceAnnouncement = async (source: string, destination: string, distance: number, time: number) => {
+    const handleSOS = async () => {
+        setIsLocating(true);
+        setStatus('🚨 EMERGENCY ACTIVATED: Getting GPS...');
+        
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude: lat, longitude: lon } = pos.coords;
+            const userNode: Location = { id: 'user_pos', name: 'My Current Location', type: 'user', lat, lon };
+            setLocations(prev => [...prev.filter(l => l.id !== 'user_pos'), userNode]);
+            setStartId('user_pos');
+            setIsLocating(false);
+
+            setStatus('🚨 Finding nearest hospital...');
+            try {
+                const res = await axios.post('http://localhost:3001/api/search-places', { 
+                    query: 'hospital',
+                    lat,
+                    lon
+                });
+                
+                if (res.data.length > 0) {
+                    const nearest = res.data[0];
+                    setSosHospital(nearest.name);
+                    setIsSOSModalOpen(true);
+                    
+                    
+                    if (!locations.find(l => l.id === nearest.id)) {
+                        setLocations(prev => [...prev, nearest]);
+                    }
+
+                    
+                    const sosMsg = `Emergency activated. Your location has been shared with ${nearest.name} and the nearest police station. Help is on the way.`;
+                    handleVoiceAnnouncement("Your location", nearest.name, 0, 0, sosMsg);
+
+                    
+                    runBidirAnimation(userNode, nearest, async () => {
+                        await drawFinalRoute(userNode, nearest);
+                        setStatus(`🆘 EMERGENCY: Routing to ${nearest.name}`);
+                    });
+                }
+            } catch (err) {
+                setStatus('❌ SOS Failed: Network error.');
+            }
+        }, (err) => {
+            setStatus('❌ SOS Failed: GPS required.');
+            setIsLocating(false);
+        }, { enableHighAccuracy: true });
+    };
+
+    const handleVoiceAnnouncement = async (source: string, destination: string, distance: number, time: number, customMessage?: string) => {
         setIsSpeaking(true);
         setStatus('🔊 Generating voice announcement...');
         try {
-            const response = await axios.post('http://localhost:3001/api/voice-announcement', {
+            const payload = customMessage ? {
+                source: "Emergency",
+                destination: "Help",
+                distance: "0",
+                time: 0,
+                language,
+                template: customMessage 
+            } : {
                 source,
                 destination,
                 distance: distance.toFixed(1),
                 time,
                 language
+            };
+
+            
+            const response = await axios.post('http://localhost:3001/api/voice-announcement', {
+                ...payload,
+                customMessage 
             });
             
             if (response.data.audio) {
@@ -617,9 +985,26 @@ const App: React.FC = () => {
         <div id="app-container">
             <div className="main-layout">
                 <div id="control-panel">
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-                        <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', margin: 0 }}>Pathfinder</h1>
-                        <ThemeToggle theme={theme} toggle={toggleTheme} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+                        <div style={{ fontSize: '24px', fontWeight: 800, color: 'var(--primary)', letterSpacing: '-0.02em' }}>📍 Pathfinder</div>
+                        <button 
+                            className="btn-primary" 
+                            style={{ 
+                                background: '#ef4444', 
+                                color: 'white', 
+                                border: 'none', 
+                                fontWeight: 800, 
+                                fontSize: '12px', 
+                                padding: '8px 16px', 
+                                borderRadius: '30px',
+                                boxShadow: '0 4px 10px rgba(239, 68, 68, 0.3)', 
+                                animation: 'pulse-red 2s infinite',
+                                cursor: 'pointer'
+                            }}
+                            onClick={handleSOS}
+                        >
+                            🚨 SOS
+                        </button>
                     </div>
 
                     <button 
@@ -745,8 +1130,27 @@ const App: React.FC = () => {
                     </div>
                 </div>
                 <div style={{ position: 'absolute', inset: 0, overflowY: 'auto', zIndex: 2000, background: 'var(--bg-page)', display: view === 'housing' ? 'block' : 'none' }}>
-                    <HousingDashboard locations={locations} onRouteToCampus={handleRouteToCampus} />
+                    <HousingDashboard locations={locations} reviews={reviews} onRouteToCampus={handleRouteToCampus} onOpenUpload={() => setIsUploadOpen(true)} onAddReview={handleAddReview} />
                 </div>
+                <UploadModal isOpen={isUploadOpen} onClose={() => setIsUploadOpen(false)} onUpload={handleUploadHostel} />
+                
+                {isSOSModalOpen && (
+                    <div style={{ position: 'fixed', inset: 0, background: 'rgba(239, 68, 68, 0.4)', zIndex: 5000, display: 'flex', alignItems: 'center', justifyContent: 'center', backdropFilter: 'blur(8px)' }}>
+                        <div style={{ background: 'var(--bg-page)', width: '90%', maxWidth: '450px', borderRadius: '24px', padding: '40px', textAlign: 'center', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)', border: '2px solid #ef4444' }}>
+                            <div style={{ fontSize: '64px', marginBottom: '20px', animation: 'pulse-red 1.5s infinite' }}>🚨</div>
+                            <h2 style={{ fontSize: '28px', fontWeight: 900, color: '#ef4444', margin: '0 0 16px 0' }}>EMERGENCY ACTIVATED</h2>
+                            <p style={{ fontSize: '18px', fontWeight: 600, color: 'var(--text-main)', margin: '0 0 24px 0', lineHeight: 1.5 }}>
+                                Your live GPS location has been shared with <strong>{sosHospital}</strong> and the nearest Police Station.
+                            </p>
+                            <p style={{ fontSize: '16px', color: 'var(--text-muted)', marginBottom: '32px' }}>
+                                A rescue team is being dispatched. Please stay calm and follow the route on your screen.
+                            </p>
+                            <button className="btn-primary" onClick={() => setIsSOSModalOpen(false)} style={{ background: '#ef4444', padding: '16px 32px', fontSize: '16px', width: '100%' }}>
+                                I UNDERSTAND
+                            </button>
+                        </div>
+                    </div>
+                )}
                 {false ? (
                     <HousingDashboard locations={locations} onRouteToCampus={handleRouteToCampus} />
                 ) : (
